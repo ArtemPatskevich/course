@@ -1,7 +1,7 @@
 package main.enums;
 
 public enum BodyType {
-    PASSANGER,
+    PASSENGER,
     KUPE,
     MINIVAN,
     SUV
