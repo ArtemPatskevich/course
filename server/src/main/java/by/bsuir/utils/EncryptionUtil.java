@@ -1,6 +1,5 @@
 package by.bsuir.utils;
 
-import by.bsuir.models.dto.Lesson;
 import by.bsuir.models.dto.Pair;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
@@ -36,12 +35,6 @@ public class EncryptionUtil {
 		}
 		byte[] resultByteArray = messageDigest.digest(message.getBytes());
 		return (new BigInteger(1, resultByteArray)).toString(16);
-	}
-
-	public static void encryptLessonId(Lesson lesson) {
-		Pair<String, String> encryptedIdAndSeed = encrypt(lesson.getLessonId());
-		lesson.setEncryptedLessonId(encryptedIdAndSeed.getFirst());
-		lesson.setEncryptedLessonIdSeed(encryptedIdAndSeed.getSecond());
 	}
 
 	public static int[] convertByteArrayToIntArray(byte[] byteArray) {

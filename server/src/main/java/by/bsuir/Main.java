@@ -22,7 +22,7 @@ public class Main extends Application {
 	public static void startServer() {
 		try {
 			serverSocket = new ServerSocket(ServerSocketInfo.PORT);
-			System.out.println("<=======> SERVER IS RUNNING <=======>");
+			System.out.println("\nСЕРВЕР ЗАПУЩЕН...");
 
 			while (true) {
 				try {
