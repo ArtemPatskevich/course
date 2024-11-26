@@ -1,0 +1,37 @@
+package by.bsuir.models.entities;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "user")
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "username", columnDefinition = "VARCHAR(50)")
+    private String username;
+
+    @Column(name = "password", columnDefinition = "VARCHAR(255)")
+    private String password;
+
+    @Column(name = "firstname", columnDefinition = "VARCHAR(50)")
+    private String firstname;
+
+    @Column(name = "lastname", columnDefinition = "VARCHAR(50)")
+    private String lastname;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", insertable = false, updatable = false, nullable = false)
+    private RoleEntity role;
+
+    @Column(name = "role_id", columnDefinition = "INT")
+    private Integer roleId;
+}
