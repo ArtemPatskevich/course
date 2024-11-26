@@ -1,7 +1,8 @@
 package by.bsuir.models.entities;
 
-import by.bsuir.enums.BodyType;
-import by.bsuir.enums.PetrolType;
+import by.bsuir.enums.entituAttributes.BodyType;
+import by.bsuir.enums.entituAttributes.PetrolType;
+import by.bsuir.models.dto.Car;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,22 +35,8 @@ public class CarEntity {
 
     @Column(name = "image_path", columnDefinition = "VARCHAR(100)")
     private String imagePath;
-}
 
-//@Data
-//@NoArgsConstructor
-//@Entity
-//@Table(name = "`group`")
-//public class GroupEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id")
-//    private Long id;
-//
-//    @Column(name = "number", columnDefinition = "INT")
-//    private Integer number;
-//
-//    public GroupEntity(int number) {
-//        this.number = number;
-//    }
-//}
+    public Car toCar() {
+        return new Car(id, brand, cost, petrolType, bodyType, imagePath);
+    }
+}

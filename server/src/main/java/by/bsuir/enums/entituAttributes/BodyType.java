@@ -1,4 +1,4 @@
-package by.bsuir.enums;
+package by.bsuir.enums.entituAttributes;
 
 public enum BodyType {
     PASSENGER,

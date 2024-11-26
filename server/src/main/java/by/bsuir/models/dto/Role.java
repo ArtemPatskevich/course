@@ -1,6 +1,6 @@
 package by.bsuir.models.dto;
 
-import by.bsuir.enums.RoleName;
+import by.bsuir.enums.entituAttributes.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

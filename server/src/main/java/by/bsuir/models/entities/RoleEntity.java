@@ -1,6 +1,7 @@
 package by.bsuir.models.entities;
 
-import by.bsuir.enums.RoleName;
+import by.bsuir.enums.entituAttributes.RoleName;
+import by.bsuir.models.dto.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +21,8 @@ public class RoleEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "name", columnDefinition = "ENUM('CLIENT','ADMIN','MANAGER')")
     private RoleName name;
+
+    public Role toRole() {
+        return new Role(id, name);
+    }
 }

@@ -1,5 +1,8 @@
 package by.bsuir.models.entities;
 
+import by.bsuir.models.dto.Client;
+import by.bsuir.models.dto.Role;
+import by.bsuir.models.dto.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,4 +37,15 @@ public class ClientEntity {
     @Column(name = "birth_date", columnDefinition = "DATE")
     private LocalDate birthDate;
 
+    public Client toClient() {
+        return new Client(id, new User(
+                                user.getId(),
+                                user.getUsername(),
+                                user.getPassword(),
+                                user.getFirstname(),
+                                user.getLastname(),
+                                new Role(user.getRole().getName())
+                            ),
+                phoneNumber, passportNumber, birthDate);
+    }
 }

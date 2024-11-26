@@ -1,5 +1,9 @@
 package by.bsuir.models.entities;
 
+import by.bsuir.models.dto.Car;
+import by.bsuir.models.dto.Request;
+import by.bsuir.models.dto.Role;
+import by.bsuir.models.dto.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,4 +43,32 @@ public class RequestEntity {
 
     @Column(name = "manager_id", columnDefinition = "INT")
     private Integer managerId;
+
+    public Request toRequest() {
+        return new Request(id, isApproved,
+                new User(
+                    user.getId(),
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getFirstname(),
+                    user.getLastname(),
+                    new Role(user.getRole().getName())
+                ),
+                new Car(car.getId(),
+                        car.getBrand(),
+                        car.getCost(),
+                        car.getPetrolType(),
+                        car.getBodyType(),
+                        car.getImagePath()
+                ),
+                new User(
+                        manager.getId(),
+                        manager.getUsername(),
+                        manager.getPassword(),
+                        manager.getFirstname(),
+                        manager.getLastname(),
+                        new Role(manager.getRole().getName())
+                )
+        );
+    }
 }

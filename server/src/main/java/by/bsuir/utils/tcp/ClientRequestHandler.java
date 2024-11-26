@@ -1,7 +1,10 @@
 package by.bsuir.utils.tcp;
 
 import by.bsuir.Main;
+import by.bsuir.enums.requests.ClientRequestType;
+import by.bsuir.enums.requests.ServerResponseStatus;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -26,8 +29,13 @@ public class ClientRequestHandler implements Runnable {
     @Override
     public void run() {
         try {
-            //
-            throw new SocketException();
+            ClientRequestType clientRequestType;
+            while (true) {
+                clientRequestType = (ClientRequestType) input.readObject();
+                switch (clientRequestType) {
+                    case GET_REQUESTS -> serverResponse.getRequests(output);
+                }
+            }
         } catch (SocketException e) {
             System.out.println("Пользователь " + clientSocket.toString() + " вышел\nПользователей в системе: "
                                                                                     + (--Main.activeUsers));

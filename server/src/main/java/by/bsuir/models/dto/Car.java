@@ -1,8 +1,8 @@
 package by.bsuir.models.dto;
 
 
-import by.bsuir.enums.BodyType;
-import by.bsuir.enums.PetrolType;
+import by.bsuir.enums.entituAttributes.BodyType;
+import by.bsuir.enums.entituAttributes.PetrolType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
