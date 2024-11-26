@@ -11,7 +11,7 @@ public class Car {
     private BodyType bodyType;
     private String imagePath;
 
-    Car() {}
+    public Car() {}
 
     public Car(String brand, double cost, PetrolType petrolType, BodyType bodyType, String imagePath) {
         this.brand = brand;

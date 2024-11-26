@@ -10,8 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import main.entities.User;
+import main.enums.RoleName;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
 public class AuthorizationController {
@@ -31,7 +35,7 @@ public class AuthorizationController {
     @FXML
     public void initialize() {
         loginButton.setOnAction(this::handleLogin);
-        registerButton.setOnAction(this::handleRegister);
+        registerButton.setOnAction(event -> handlePage(event, "Registration.fxml","Registration", 600,500));
     }
 
     private void handleLogin(ActionEvent event) {
@@ -45,6 +49,26 @@ public class AuthorizationController {
 
         if (isUsernameValid && isPasswordValid) {
             System.out.println("Successful sign in!");
+
+            User user = new User(username,hashPassword(password));
+
+            RoleName userRole = RoleName.CLIENT;
+
+            switch (userRole) {
+                case CLIENT:
+                    handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700);
+                    break;
+                case ADMIN:
+                    handlePage(event, "adminPage.fxml", "PaTaaRS_Auto", 800,700);
+                    break;
+                case MANAGER:
+                    handlePage(event, "managerPage.fxml", "PaTaaRS_Auto", 800,700);
+                    break;
+                default:
+                    System.out.println("Unknown role");
+                    break;
+            }
+
             clearFields();
         } else {
             if (!isUsernameValid) {
@@ -60,18 +84,6 @@ public class AuthorizationController {
             } else {
                 passwordLabel.setText("");
             }
-        }
-    }
-
-    private void handleRegister(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/Registration.fxml"));
-            Scene scene = new Scene(loader.load());
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -93,5 +105,34 @@ public class AuthorizationController {
     private void clearFields() {
         usernameField.clear();
         passwordField.clear();
+    }
+
+    private void handlePage(ActionEvent event, String page, String title, int width, int height) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/" + page));
+            Scene scene = new Scene(loader.load(), width, height);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

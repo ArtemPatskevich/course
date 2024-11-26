@@ -6,7 +6,7 @@ public class Role {
     private int id;
     private RoleName rolename;
 
-    Role(){}
+    public Role(){}
 
     public Role(RoleName rolename) {
         this.rolename = rolename;

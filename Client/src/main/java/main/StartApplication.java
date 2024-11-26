@@ -11,7 +11,7 @@ public class StartApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(StartApplication.class.getResource("/main/Authorization.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 481);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 500);
 
         stage.setTitle("Authorization");
         stage.setScene(scene);

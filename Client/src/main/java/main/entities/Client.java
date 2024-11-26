@@ -9,7 +9,7 @@ public class Client {
     private String passportNumber;
     private LocalDate birthDate;
 
-    Client() {}
+    public Client() {}
 
     public Client(User user, String phoneNumber, String passportNumber, LocalDate birthDate) {
         this.user = user;

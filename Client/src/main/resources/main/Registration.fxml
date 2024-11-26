@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.RegistrationController">
    <children>
       <AnchorPane prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: #000000;">
@@ -20,12 +19,12 @@
             </Label>
          </children>
       </AnchorPane>
-      <TextField fx:id="surname" layoutX="61.0" layoutY="151.0" prefHeight="34.0" prefWidth="183.0" promptText="Фамилия" style="-fx-background-color: #000000;">
+      <TextField fx:id="surname" layoutX="61.0" layoutY="151.0" prefHeight="34.0" prefWidth="183.0" promptText="Фамилия" style="-fx-background-color: #000000; -fx-text-fill: white;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </TextField>
-      <TextField fx:id="name" layoutX="368.0" layoutY="151.0" prefHeight="34.0" prefWidth="183.0" promptText="Имя" style="-fx-background-color: #000000;">
+      <TextField fx:id="name" layoutX="368.0" layoutY="151.0" prefHeight="34.0" prefWidth="183.0" promptText="Имя" style="-fx-background-color: #000000; -fx-text-fill: white;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -37,24 +36,24 @@
       </Label>
       <Label fx:id="surnameLabel" layoutX="61.0" layoutY="134.0" />
       <Label fx:id="nameLabel" layoutX="368.0" layoutY="134.0" />
-      <TextField fx:id="phoneNumber" layoutX="61.0" layoutY="217.0" prefHeight="34.0" prefWidth="183.0" promptText="Номер телефона" style="-fx-background-color: #000000;">
+      <TextField fx:id="phoneNumber" layoutX="61.0" layoutY="217.0" prefHeight="34.0" prefWidth="183.0" promptText="Номер телефона" style="-fx-background-color: #000000; -fx-text-fill: white;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </TextField>
-      <TextField fx:id="passportNumber" layoutX="368.0" layoutY="217.0" prefHeight="34.0" prefWidth="183.0" promptText="Номер паспорта" style="-fx-background-color: #000000;">
+      <TextField fx:id="passportNumber" layoutX="368.0" layoutY="217.0" prefHeight="34.0" prefWidth="183.0" promptText="Номер паспорта" style="-fx-background-color: #000000; -fx-text-fill: white;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </TextField>
       <Label fx:id="phoneNumberLabel" layoutX="61.0" layoutY="200.0" />
       <Label fx:id="passportNumberLabel" layoutX="368.0" layoutY="200.0" />
-      <TextField fx:id="username" layoutX="61.0" layoutY="275.0" prefHeight="34.0" prefWidth="183.0" promptText="Имя пользователя" style="-fx-background-color: #000000;">
+      <TextField fx:id="username" layoutX="61.0" layoutY="275.0" prefHeight="34.0" prefWidth="183.0" promptText="Имя пользователя" style="-fx-background-color: #000000; -fx-text-fill: white;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="password" layoutX="61.0" layoutY="333.0" prefHeight="34.0" prefWidth="183.0" promptText="Пароль" style="-fx-background-color: #000000;">
+      <PasswordField fx:id="password" layoutX="61.0" layoutY="333.0" prefHeight="34.0" prefWidth="183.0" promptText="Пароль" style="-fx-background-color: #000000; -fx-text-fill: white;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -69,7 +68,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <PasswordField fx:id="repeatPassword" layoutX="368.0" layoutY="333.0" prefHeight="34.0" prefWidth="183.0" promptText="Повторите пароль" style="-fx-background-color: #000000;">
+      <PasswordField fx:id="repeatPassword" layoutX="368.0" layoutY="333.0" prefHeight="34.0" prefWidth="183.0" promptText="Повторите пароль" style="-fx-background-color: #000000; -fx-text-fill: white;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -78,5 +77,6 @@
       <Label fx:id="repeatPasswordLabel" layoutX="368.0" layoutY="316.0" />
       <DatePicker fx:id="birthDate" layoutX="368.0" layoutY="275.0" prefHeight="34.0" prefWidth="183.0" promptText="Дата рождения" />
       <Label fx:id="birthDateLabel" layoutX="368.0" layoutY="258.0" />
+      <Label fx:id="usernameLabel" layoutX="61.0" layoutY="258.0" />
    </children>
 </AnchorPane>
