@@ -1,8 +1,8 @@
-package by.bsuir.enums.requests;
+package main.enums.requests;
 
 public enum ClientRequestType {
     AUTHORIZE_USER,
-    REGISTER_CLIENT,
+    REGISTER_USER,
     GET_CARS,
     GET_REQUESTS
 }

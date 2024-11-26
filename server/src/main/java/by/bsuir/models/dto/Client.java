@@ -1,5 +1,6 @@
 package by.bsuir.models.dto;
 
+import by.bsuir.models.entities.ClientEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,9 @@ public class Client {
         this.phoneNumber = phoneNumber;
         this.passportNumber = passportNumber;
         this.birthDate = birthDate;
+    }
+
+    public ClientEntity toClientEntity(int userId) {
+        return new ClientEntity(null, null, userId, phoneNumber, passportNumber, birthDate);
     }
 }

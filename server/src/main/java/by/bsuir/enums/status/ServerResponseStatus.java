@@ -1,4 +1,4 @@
-package by.bsuir.enums.requests;
+package by.bsuir.enums.status;
 
 public enum ServerResponseStatus {
     OK,

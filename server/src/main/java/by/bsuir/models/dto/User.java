@@ -1,5 +1,6 @@
 package by.bsuir.models.dto;
 
+import by.bsuir.models.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,9 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+    }
+
+    public UserEntity toUserEntity() {
+        return new UserEntity(null, username, password, firstName, lastName, null, role.getId());
     }
 }

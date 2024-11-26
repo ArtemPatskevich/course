@@ -4,22 +4,22 @@ import by.bsuir.models.dto.Client;
 import by.bsuir.models.dto.Role;
 import by.bsuir.models.dto.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "client")
 public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", unique = true, insertable = false, updatable = false, nullable = false)
