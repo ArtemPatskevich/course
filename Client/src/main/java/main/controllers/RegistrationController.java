@@ -7,18 +7,19 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import main.entities.Client;
-import main.entities.Role;
-import main.entities.User;
+import main.models.dto.Client;
+import main.models.dto.Role;
+import main.models.dto.User;
+import main.enums.requests.ClientRequestType;
+import main.enums.status.RegistrationStatus;
+import main.utils.tcp.ClientRequest;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.regex.Pattern;
 
-import static main.enums.RoleName.CLIENT;
+import static main.enums.entityAttributes.RoleName.CLIENT;
 
 public class RegistrationController {
     @FXML
@@ -129,24 +130,25 @@ public class RegistrationController {
             isValid = false;
         }
 
-        if (isValid) {
-            if (!isUsernameTaken(usernameText)) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Ошибка регистрации");
-                alert.setHeaderText(null);
-                alert.setContentText("Имя пользователя уже занято. Пожалуйста, выберите другое имя.");
-                alert.showAndWait();
+        if (!isValid) {
+            return;
+        }
+        if (isUsernameTaken(usernameText)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Ошибка регистрации");
+            alert.setHeaderText(null);
+            alert.setContentText("Имя пользователя уже занято. Пожалуйста, выберите другое имя.");
+            alert.showAndWait();
 
-                username.clear();
-                return;
-            }
-            System.out.println("Successful registration!");
-            String hashedPassword = hashPassword(passwordText);
+            username.clear();
+            return;
+        }
 
-            Role role = new Role(CLIENT);
-            User user = new User(usernameText, hashedPassword, surnameText, nameText, role);
-            Client client = new Client(user,phoneText,passportText,birthDate.getValue());
+        Role role = new Role(CLIENT);
+        User user = new User(usernameText, passwordText, surnameText, nameText, role);
+        Client client = new Client(user, phoneText, passportText, birthDate.getValue());
 
+        if(isClientRegistrationSuccess(client)) {
             handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700);
             clearFields();
         }
@@ -157,7 +159,7 @@ public class RegistrationController {
     }
 
     private boolean isValidPhoneNumber(String phone) {
-        return Pattern.matches("^\\+375(29|33)\\d{7}$", phone);
+        return Pattern.matches("^\\+375(29|33|44)\\d{7}$", phone);
     }
 
     private boolean isValidPassportNumber(String passport) {
@@ -210,24 +212,40 @@ public class RegistrationController {
         repeatPassword.clear();
         birthDate.getEditor().clear();
     }
-    private String hashPassword(String password) {
+
+    private boolean isUsernameTaken(String username) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            ClientRequest.sendRequestType(ClientRequestType.IS_USERNAME_EXISTS);
+            ClientRequest.output.writeObject(username);
+            return (boolean) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return true;
         }
     }
 
-    private boolean isUsernameTaken(String username) {
+    private boolean isClientRegistrationSuccess(Client client) {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.REGISTER_CLIENT);
+            ClientRequest.output.writeObject(client);
 
-        return false;
+            RegistrationStatus registrationStatus = (RegistrationStatus) ClientRequest.input.readObject();
+            if(!registrationStatus.equals(RegistrationStatus.OK)) {
+                throw new ClassNotFoundException();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Успешная регистрации");
+                alert.setHeaderText(null);
+                alert.setContentText("Вы успешно зарегистрировались");
+                alert.showAndWait();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Ошибка регистрации");
+            alert.setHeaderText(null);
+            alert.setContentText("Не удалось зарегистрироваться");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 }

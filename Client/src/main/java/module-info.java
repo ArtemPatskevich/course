@@ -1,10 +1,11 @@
 module main {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
+    requires static lombok;
 
     opens main.controllers to javafx.fxml; // Открываем пакет controllers для FXML
-    opens main.entities to javafx.fxml; // Открываем пакет entities для FXML, если нужно
-    opens main.enums to javafx.fxml; // Открываем пакет enums для FXML, если нужно
 
     exports main;
+    opens main.enums.entityAttributes to javafx.fxml;
 }

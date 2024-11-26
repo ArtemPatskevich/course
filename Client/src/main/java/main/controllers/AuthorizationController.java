@@ -10,12 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.entities.User;
-import main.enums.RoleName;
+import main.enums.entityAttributes.RoleName;
+import main.enums.requests.ClientRequestType;
+import main.models.dto.User;
+import main.utils.tcp.ClientRequest;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
 public class AuthorizationController {
@@ -44,57 +44,31 @@ public class AuthorizationController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        boolean isUsernameValid = validateUsername(username);
-        boolean isPasswordValid = validatePassword(password);
+        User user = authorizeUser(new User(username, password, null, null, null));
 
-        if (isUsernameValid && isPasswordValid) {
-            System.out.println("Successful sign in!");
-
-            User user = new User(username,hashPassword(password));
-
-            RoleName userRole = RoleName.CLIENT;
-
-            switch (userRole) {
-                case CLIENT:
-                    handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700);
-                    break;
-                case ADMIN:
-                    handlePage(event, "adminPage.fxml", "PaTaaRS_Auto", 800,700);
-                    break;
-                case MANAGER:
-                    handlePage(event, "managerPage.fxml", "PaTaaRS_Auto", 800,700);
-                    break;
-                default:
-                    System.out.println("Unknown role");
-                    break;
-            }
-
-            clearFields();
-        } else {
-            if (!isUsernameValid) {
-                usernameLabel.setText("Некорректное имя пользователя");
-                usernameLabel.setStyle("-fx-text-fill: red;");
-            } else {
-                usernameLabel.setText("");
-            }
-
-            if (!isPasswordValid) {
-                passwordLabel.setText("Некорректный пароль");
-                passwordLabel.setStyle("-fx-text-fill: red;");
-            } else {
-                passwordLabel.setText("");
-            }
+        if (user == null) {
+            usernameLabel.setText("Неверное имя пользователя или пароль");
+            usernameLabel.setStyle("-fx-text-fill: red;");
+            return;
         }
-    }
 
-    private boolean validateUsername(String username) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{8,16}$");
-        return pattern.matcher(username).matches();
-    }
+        RoleName userRole = user.getRole().getRolename();
+        switch (userRole) {
+            case CLIENT:
+                handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700);
+                break;
+            case ADMIN:
+                handlePage(event, "adminPage.fxml", "PaTaaRS_Auto", 800,700);
+                break;
+            case MANAGER:
+                handlePage(event, "managerPage.fxml", "PaTaaRS_Auto", 800,700);
+                break;
+            default:
+                System.out.println("Unknown role");
+                break;
+        }
 
-    private boolean validatePassword(String password) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{8,16}$");
-        return pattern.matcher(password).matches();
+        clearFields();
     }
 
     private void clearErrorLabels() {
@@ -120,19 +94,15 @@ public class AuthorizationController {
         }
     }
 
-    private String hashPassword(String password) {
+    private User authorizeUser(User user) {
+        User authorizedUser = null;
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
+            ClientRequest.sendRequestType(ClientRequestType.AUTHORIZE_USER);
+            ClientRequest.output.writeObject(user);
+            authorizedUser = (User) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+        return authorizedUser;
     }
 }
