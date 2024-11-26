@@ -7,7 +7,7 @@ public class Request {
     private Car car;
     private User manager;
 
-    Request() {}
+    public Request() {}
 
     public Request(boolean isApproved, User user, Car car, User manager) {
         this.isApproved = isApproved;

@@ -8,15 +8,21 @@ public class User {
     private String lastName;
     private Role role;
 
-    User(){}
+    public User(){}
 
-    User(String username, String password, String firstName, String lastName, Role role)
+    public User(String username, String password, String firstName, String lastName, Role role)
     {
         this.username = username;
         this.password = password;
         this.firstName =firstName;
         this.lastName = lastName;
         this.role = role;
+    }
+
+    public User(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
     }
 
     public int getId() {
