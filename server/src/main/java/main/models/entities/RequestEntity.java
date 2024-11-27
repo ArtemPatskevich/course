@@ -68,7 +68,8 @@ public class RequestEntity {
                         manager.getFirstname(),
                         manager.getLastname(),
                         new Role(manager.getRole().getName())
-                )
+                ),
+                null, null
         );
     }
 }
