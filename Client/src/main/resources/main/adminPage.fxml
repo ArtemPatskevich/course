@@ -1,14 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main.controllers.AdminPageController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.AdminPageController">
+   <children>
+      <AnchorPane prefHeight="123.0" prefWidth="1100.0" style="-fx-background-color: #000000;">
+         <children>
+            <Label layoutX="14.0" layoutY="29.0" prefHeight="65.0" prefWidth="197.0" text="PaTaaRS_Auto" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="carControl" layoutX="253.0" layoutY="46.0" prefHeight="31.0" prefWidth="197.0" promptText="Управление автомобилями" style="-fx-background-color: #FFFFFF;" />
+            <ComboBox fx:id="userControl" layoutX="503.0" layoutY="46.0" prefHeight="31.0" prefWidth="205.0" promptText="Управление пользователями" style="-fx-background-color: #FFFFFF;" />
+            <Button fx:id="makingReport" layoutX="747.0" layoutY="46.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="189.0" style="-fx-background-color: #FFFFFF;" text="Формирование отчета">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="logOut" layoutX="990.0" layoutY="46.0" mnemonicParsing="false" style="-fx-background-color: ORANGE;" text="Выход" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="carControlPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false" />
+      <AnchorPane fx:id="startPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+         <children>
+            <Label layoutX="60.0" layoutY="257.0" text="Добро пожаловать в панель администратора!">
+               <font>
+                  <Font name="System Bold" size="43.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="userControlPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" />
+   </children>
 </AnchorPane>
