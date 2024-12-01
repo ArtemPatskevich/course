@@ -36,7 +36,7 @@ public class AuthorizationController {
     @FXML
     public void initialize() {
         loginButton.setOnAction(this::handleLogin);
-        registerButton.setOnAction(event -> handlePage(event, "Registration.fxml","Registration", 600,500));
+        registerButton.setOnAction(event -> handlePage(event, "Registration.fxml","Registration", 600,500, false, false));
     }
 
     private void handleLogin(ActionEvent event) {
@@ -57,13 +57,13 @@ public class AuthorizationController {
         RoleName userRole = user.getRole().getRolename();
         switch (userRole) {
             case CLIENT:
-                handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700);
+                handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700, false, true);
                 break;
             case ADMIN:
-                handlePage(event, "adminPage.fxml", "PaTaaRS_Auto", 800,700);
+                handlePage(event, "adminPage.fxml", "PaTaaRS_Auto", 800,700, false, true);
                 break;
             case MANAGER:
-                handlePage(event, "managerPage.fxml", "PaTaaRS_Auto", 800,700);
+                handlePage(event, "managerPage.fxml", "PaTaaRS_Auto", 800,700, false, true);
                 break;
             default:
                 System.out.println("Unknown role");
@@ -83,15 +83,15 @@ public class AuthorizationController {
         passwordField.clear();
     }
 
-    private void handlePage(ActionEvent event, String page, String title, int width, int height) {
+    private void handlePage(ActionEvent event, String page, String title, int width, int height, boolean isResizable, boolean isMaximized) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/" + page));
             Scene scene = new Scene(loader.load(), width, height);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle(title);
-            stage.setResizable(true);
-            stage.setMaximized(true);
+            stage.setResizable(isResizable);
+            stage.setMaximized(isMaximized);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

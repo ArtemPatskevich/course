@@ -62,7 +62,7 @@ public class RegistrationController {
 
     @FXML
     public void initialize() {
-        signIn.setOnAction(event -> handlePage(event, "Authorization.fxml", "Authorization",600, 500));
+        signIn.setOnAction(event -> handlePage(event, "Authorization.fxml", "Authorization",600, 500, false, false));
         signUp.setOnAction(this::handleSignUp);
     }
 
@@ -153,7 +153,7 @@ public class RegistrationController {
             return;
         }
         if(fillInSession(client)) {
-            handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700);
+            handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700, false, true);
             clearFields();
         }
         System.out.println(UserSession.getInstance().getId());
@@ -183,15 +183,15 @@ public class RegistrationController {
         return Period.between(birthDate, LocalDate.now()).getYears() >= 18;
     }
 
-    private void handlePage(ActionEvent event, String page, String title, int width, int height) {
+    private void handlePage(ActionEvent event, String page, String title, int width, int height, boolean isResizable, boolean isMaximized) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/" + page));
             Scene scene = new Scene(loader.load(), width, height);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle(title);
-            stage.setResizable(true);
-            stage.setMaximized(true);
+            stage.setResizable(isResizable);
+            stage.setMaximized(isMaximized);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

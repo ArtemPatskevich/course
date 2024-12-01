@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -41,6 +43,12 @@ public class RequestEntity {
     @Column(name = "manager_id", columnDefinition = "INT")
     private Integer managerId;
 
+    @Column(name = "send_date", columnDefinition = "DATETIME")
+    private LocalDateTime sendDate;
+
+    @Column(name = "approve_date", columnDefinition = "DATETIME")
+    private LocalDateTime approvedDate;
+
     public Request toRequest() {
         return new Request(id, isApproved,
                 new Client(
@@ -65,7 +73,7 @@ public class RequestEntity {
                         manager.getLastname(),
                         new Role(manager.getRole().getName())
                 ),
-                null, null
+                sendDate, approvedDate
         );
     }
 }

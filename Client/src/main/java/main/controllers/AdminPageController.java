@@ -11,8 +11,10 @@ import javafx.stage.Stage;
 import main.enums.entityAttributes.BodyType;
 import main.enums.entityAttributes.PetrolType;
 import main.enums.entityAttributes.RoleName;
+import main.enums.requests.ClientRequestType;
 import main.models.dto.*;
 import main.utils.UserSession;
+import main.utils.tcp.ClientRequest;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -147,16 +149,12 @@ public class AdminPageController {
     }
 
     private List<Request> getRequestsFromServer() {
-
-        return List.of(
-                new Request(true, new Client(
-                        new User("qwerty", null, "qwerty", "qwerty", new Role(RoleName.CLIENT)
-                        ),
-                                "phone", "passport", LocalDate.of(2000, 2, 9)),
-                new Car("brand", 25.0, PetrolType.DIESEL, BodyType.KUPE, "path"),
-                        new User("manager", null, "qwerty", "qwerty", new Role(RoleName.CLIENT)
-                        ),
-                        LocalDateTime.now(), LocalDateTime.now()));
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_REQUESTS);
+            return (List<Request>) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void showCarControlPanel() {
