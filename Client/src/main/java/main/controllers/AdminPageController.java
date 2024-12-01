@@ -100,14 +100,12 @@ public class AdminPageController {
         usernameColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsername()));
         deleteColumn.setCellFactory(col -> new TableCell<User, Void>() {
             private final Button deleteButton = new Button("Удалить");
-
             {
                 deleteButton.setOnAction(event -> {
                     User user = getTableView().getItems().get(getIndex());
                     deleteUserOnServer(user);
                 });
             }
-
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
