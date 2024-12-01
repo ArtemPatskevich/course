@@ -8,11 +8,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import main.models.dto.Request;
+import main.enums.entityAttributes.BodyType;
+import main.enums.entityAttributes.PetrolType;
+import main.enums.entityAttributes.RoleName;
+import main.models.dto.*;
+import main.utils.UserSession;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,8 +90,8 @@ public class AdminPageController {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Request request : requests) {
                 String fullNameUser = String.format("%s %s",
-                        request.getUser().getFirstName(),
-                        request.getUser().getLastName());
+                        request.getClient().getUser().getFirstName(),
+                        request.getClient().getUser().getLastName());
                 String fullNameManager = String.format("%s %s",
                         request.getManager().getFirstName(),
                         request.getManager().getLastName());
@@ -118,6 +124,8 @@ public class AdminPageController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+                UserSession.getInstance().logOut();
+
                 System.out.println("Выход из системы...");
                 try {
                     Parent root = FXMLLoader.load(getClass().getResource("/main/Authorization.fxml"));
@@ -139,7 +147,16 @@ public class AdminPageController {
     }
 
     private List<Request> getRequestsFromServer() {
-        return new ArrayList<>();
+
+        return List.of(
+                new Request(true, new Client(
+                        new User("qwerty", null, "qwerty", "qwerty", new Role(RoleName.CLIENT)
+                        ),
+                                "phone", "passport", LocalDate.of(2000, 2, 9)),
+                new Car("brand", 25.0, PetrolType.DIESEL, BodyType.KUPE, "path"),
+                        new User("manager", null, "qwerty", "qwerty", new Role(RoleName.CLIENT)
+                        ),
+                        LocalDateTime.now(), LocalDateTime.now()));
     }
 
     public void showCarControlPanel() {

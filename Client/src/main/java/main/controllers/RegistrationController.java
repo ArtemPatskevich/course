@@ -12,6 +12,7 @@ import main.models.dto.Role;
 import main.models.dto.User;
 import main.enums.requests.ClientRequestType;
 import main.enums.status.RegistrationStatus;
+import main.utils.UserSession;
 import main.utils.tcp.ClientRequest;
 
 import java.io.IOException;
@@ -148,10 +149,14 @@ public class RegistrationController {
         User user = new User(usernameText, passwordText, surnameText, nameText, role);
         Client client = new Client(user, phoneText, passportText, birthDate.getValue());
 
-        if(isClientRegistrationSuccess(client)) {
+        if(!isClientRegistrationSuccess(client)) {
+            return;
+        }
+        if(fillInSession(client)) {
             handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700);
             clearFields();
         }
+        System.out.println(UserSession.getInstance().getId());
     }
 
     private boolean isValidName(String name) {
@@ -185,6 +190,8 @@ public class RegistrationController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle(title);
+            stage.setResizable(true);
+            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -238,6 +245,24 @@ public class RegistrationController {
                 alert.setContentText("Вы успешно зарегистрировались");
                 alert.showAndWait();
             }
+        } catch (IOException | ClassNotFoundException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Ошибка регистрации");
+            alert.setHeaderText(null);
+            alert.setContentText("Не удалось зарегистрироваться");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean fillInSession(Client client) {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_USER_BY_USERNAME);
+            ClientRequest.output.writeObject(client.getUser().getUsername());
+
+            User user = (User) ClientRequest.input.readObject();
+            UserSession.getInstance().fillIn(user);
         } catch (IOException | ClassNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Ошибка регистрации");

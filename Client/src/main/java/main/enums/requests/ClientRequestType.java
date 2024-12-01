@@ -5,5 +5,6 @@ public enum ClientRequestType {
     AUTHORIZE_USER,
     REGISTER_CLIENT,
     GET_CARS,
-    GET_REQUESTS
+    GET_REQUESTS,
+    GET_USER_BY_USERNAME
 }

@@ -1,9 +1,6 @@
 package main.models.entities;
 
-import main.models.dto.Car;
-import main.models.dto.Request;
-import main.models.dto.Role;
-import main.models.dto.User;
+import main.models.dto.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +21,8 @@ public class RequestEntity {
     private boolean isApproved;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false, nullable = false)
-    private UserEntity user;
+    @JoinColumn(name = "client_id", insertable = false, updatable = false, nullable = false)
+    private ClientEntity client;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "car_id", insertable = false, updatable = false, nullable = false)
@@ -35,8 +32,8 @@ public class RequestEntity {
     @JoinColumn(name = "manager_id", insertable = false, updatable = false, nullable = false)
     private UserEntity manager;
 
-    @Column(name = "user_id", columnDefinition = "INT")
-    private Integer userId;
+    @Column(name = "client_id", columnDefinition = "INT")
+    private Integer clientId;
 
     @Column(name = "car_id", columnDefinition = "INT")
     private Integer carId;
@@ -46,13 +43,12 @@ public class RequestEntity {
 
     public Request toRequest() {
         return new Request(id, isApproved,
-                new User(
-                    user.getId(),
-                    user.getUsername(),
-                    user.getPassword(),
-                    user.getFirstname(),
-                    user.getLastname(),
-                    new Role(user.getRole().getName())
+                new Client(
+                    client.getId(),
+                    client.getUser().toUser(),
+                    client.getPhoneNumber(),
+                    client.getPassportNumber(),
+                    client.getBirthDate()
                 ),
                 new Car(car.getId(),
                         car.getBrand(),

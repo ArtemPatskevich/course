@@ -38,6 +38,6 @@ public class UserEntity {
     private Integer roleId;
 
     public User toUser() {
-        return new User(username, password, firstname, lastname, new Role(role.getName()));
+        return new User(id, username, password, firstname, lastname, new Role(role.getName()));
     }
 }

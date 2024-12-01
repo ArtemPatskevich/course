@@ -28,10 +28,10 @@ public class ClientEntity {
     @Column(name = "user_id", columnDefinition = "INT")
     private Integer userId;
 
-    @Column(name = "phone_number", columnDefinition = "VARCHAR(15)", unique = true)
+    @Column(name = "phone_number", columnDefinition = "VARCHAR(15)")
     private String phoneNumber;
 
-    @Column(name = "passport_number", columnDefinition = "VARCHAR(15)", unique = true)
+    @Column(name = "passport_number", columnDefinition = "VARCHAR(15)")
     private String passportNumber;
 
     @Column(name = "birth_date", columnDefinition = "DATE")

@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import main.enums.entityAttributes.RoleName;
 import main.enums.requests.ClientRequestType;
 import main.models.dto.User;
+import main.utils.UserSession;
 import main.utils.tcp.ClientRequest;
 
 import java.io.IOException;
@@ -52,6 +53,7 @@ public class AuthorizationController {
             return;
         }
 
+        UserSession.getInstance().fillIn(user);
         RoleName userRole = user.getRole().getRolename();
         switch (userRole) {
             case CLIENT:
@@ -88,6 +90,8 @@ public class AuthorizationController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle(title);
+            stage.setResizable(true);
+            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

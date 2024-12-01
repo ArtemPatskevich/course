@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 public class Request implements Serializable {
     private int id;
     private boolean isApproved;
-    private User user;
+    private Client client;
     private Car car;
     private User manager;
     private LocalDateTime sendDate;
     private LocalDateTime approvedDate;
 
-    public Request(boolean isApproved, User user, Car car, User manager, LocalDateTime sendDate, LocalDateTime approvedDate) {
+    public Request(boolean isApproved, Client client, Car car, User manager, LocalDateTime sendDate, LocalDateTime approvedDate) {
         this.isApproved = isApproved;
-        this.user = user;
+        this.client = client;
         this.car = car;
         this.manager = manager;
         this.sendDate = sendDate;

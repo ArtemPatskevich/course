@@ -35,6 +35,7 @@ public class ClientRequestHandler implements Runnable {
                     case REGISTER_CLIENT -> serverResponse.registerClient(output, input);
                     case AUTHORIZE_USER -> serverResponse.authorizeUser(output, input);
                     case GET_REQUESTS -> serverResponse.getRequests(output);
+                    case GET_USER_BY_USERNAME -> serverResponse.getUserByUsername(output, input);
                 }
             }
         } catch (SocketException e) {

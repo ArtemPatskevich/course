@@ -63,4 +63,9 @@ public class ServerResponse {
         }
     }
 
+    public void getUserByUsername(ObjectOutputStream output, ObjectInputStream input) throws IOException, ClassNotFoundException {
+        String username = (String) input.readObject();
+        output.writeObject(userRepository.findByUsername(username).toUser());
+    }
+
 }
