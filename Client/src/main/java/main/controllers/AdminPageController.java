@@ -1,5 +1,8 @@
 package main.controllers;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -33,14 +36,13 @@ public class AdminPageController {
     private AnchorPane startPanel;
 
     @FXML
-    private AnchorPane userControlPanel;
-
-    @FXML
     private ComboBox<String> carControl;
-
     @FXML
     private ComboBox<String> userControl;
-
+    @FXML
+    private AnchorPane checkUserPanel;
+    @FXML
+    private AnchorPane deleteUserPanel;
     @FXML
     private Button makingReport;
 
@@ -48,13 +50,107 @@ public class AdminPageController {
     private Button logOut;
 
     @FXML
-    private Label welcomeLabel;
+    private TableView<User> usersTable;
+    @FXML
+    private TableColumn<User, String> firstNameColumn;
+    @FXML
+    private TableColumn<User, String> lastNameColumn;
+    @FXML
+    private TableColumn<User, String> roleColumn;
+    @FXML
+    private TableColumn<User, String> usernameColumn;
+
+    @FXML
+    private TableView<User> usersTableDelete;
+    @FXML
+    private TableColumn<User, String> firstNameColumnDel;
+    @FXML
+    private TableColumn<User, String> lastNameColumnDel;
+    @FXML
+    private TableColumn<User, String> roleColumnDel;
+    @FXML
+    private TableColumn<User, String> usernameColumnDel;
+    @FXML
+    private TableColumn<User, Void> deleteColumn;
 
     @FXML
     public void initialize() {
         makingReport.setOnAction(event -> generateReport());
         logOut.setOnAction(event -> logOut(event));
+        setupUserControlListener();
+        initializeTableColumns();
+        initializeDeleteTableColumns();
     }
+    private void setupUserControlListener() {
+        userControl.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            handleUserControlSelection(newValue);
+        });
+    }
+    private void initializeTableColumns() {
+        firstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
+        lastNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
+        roleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRole().getRolename().toString()));
+        usernameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsername()));
+    }
+
+    private void initializeDeleteTableColumns() {
+        firstNameColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
+        lastNameColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
+        roleColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRole().getRolename().toString()));
+        usernameColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUsername()));
+        deleteColumn.setCellFactory(col -> new TableCell<User, Void>() {
+            private final Button deleteButton = new Button("Удалить");
+
+            {
+                deleteButton.setOnAction(event -> {
+                    User user = getTableView().getItems().get(getIndex());
+                    deleteUserOnServer(user);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+    }
+
+    private void deleteUserOnServer(User user)
+    {}
+    private void addUsersTable(List<User> users) {
+        ObservableList<User> observableUsers = FXCollections.observableArrayList(users);
+        usersTable.setItems(observableUsers);
+    }
+    private void addUsersToDeleteTable(List<User> users) {
+        ObservableList<User> observableUsers = FXCollections.observableArrayList(users);
+        usersTableDelete.setItems(observableUsers);
+    }
+    private List<User> getUsersFromServer() {
+        return List.of();
+    }
+    private void handleUserControlSelection(String selectedValue) {
+        if (selectedValue != null) {
+            switch (selectedValue) {
+                case "Просмотреть пользователей":
+                    closePanels();
+                    checkUserPanel.setVisible(true);
+                    addUsersTable(getUsersFromServer());
+                    break;
+                case "Убрать пользователя":
+                    closePanels();
+                    deleteUserPanel.setVisible(true);
+                    addUsersToDeleteTable(getUsersFromServer());
+                    break;
+            }
+        }
+    }
+
+
 
     private void generateReport() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -156,16 +252,10 @@ public class AdminPageController {
             throw new RuntimeException(e);
         }
     }
-
-    public void showCarControlPanel() {
-        startPanel.setVisible(false);
-        carControlPanel.setVisible(true);
-        userControlPanel.setVisible(false);
-    }
-
-    public void showUserControlPanel() {
+    public void closePanels() {
         startPanel.setVisible(false);
         carControlPanel.setVisible(false);
-        userControlPanel.setVisible(true);
+        checkUserPanel.setVisible(false);
+        deleteUserPanel.setVisible(false);
     }
 }

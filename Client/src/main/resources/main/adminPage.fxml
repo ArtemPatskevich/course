@@ -6,6 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.AdminPageController">
    <children>
       <AnchorPane prefHeight="123.0" prefWidth="1100.0" style="-fx-background-color: #000000;">
@@ -16,8 +20,14 @@
                </font>
             </Label>
             <ComboBox fx:id="carControl" layoutX="253.0" layoutY="46.0" prefHeight="31.0" prefWidth="197.0" promptText="Управление автомобилями" style="-fx-background-color: #FFFFFF;" />
-            <ComboBox fx:id="userControl" layoutX="503.0" layoutY="46.0" prefHeight="31.0" prefWidth="205.0" promptText="Управление пользователями" style="-fx-background-color: #FFFFFF;" />
-            <Button fx:id="makingReport" layoutX="747.0" layoutY="46.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="189.0" style="-fx-background-color: #FFFFFF;" text="Формирование отчета">
+            <ComboBox fx:id="userControl" layoutX="503.0" layoutY="46.0" prefHeight="31.0" prefWidth="205.0" promptText="Управление пользователями" style="-fx-background-color: #FFFFFF;">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Просмотреть пользователей" />
+                     <String fx:value="Убрать пользователя" />
+                  </FXCollections>
+               </items>
+            </ComboBox><Button fx:id="makingReport" layoutX="747.0" layoutY="46.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="189.0" style="-fx-background-color: #FFFFFF;" text="Формирование отчета">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -39,6 +49,35 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="userControlPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" />
+      <AnchorPane fx:id="checkUserPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+         <TableView fx:id="usersTable" layoutX="10.0" layoutY="10.0" prefHeight="550.0" prefWidth="1080.0"
+                    columnResizePolicy="CONSTRAINED_RESIZE_POLICY">
+            <columns>
+               <TableColumn fx:id="firstNameColumn" text="Имя" />
+               <TableColumn fx:id="lastNameColumn" text="Фамилия" />
+               <TableColumn fx:id="roleColumn" text="Роль" />
+               <TableColumn fx:id="usernameColumn" text="Имя пользователя" />
+            </columns>
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+         </TableView>
+      </AnchorPane>
+
+      <AnchorPane fx:id="deleteUserPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+         <TableView fx:id="usersTableDelete" layoutX="10.0" layoutY="10.0" prefHeight="550.0" prefWidth="1080.0"
+                    columnResizePolicy="CONSTRAINED_RESIZE_POLICY">
+            <columns>
+               <TableColumn fx:id="firstNameColumnDel" text="Имя" />
+               <TableColumn fx:id="lastNameColumnDel" text="Фамилия" />
+               <TableColumn fx:id="roleColumnDel" text="Роль" />
+               <TableColumn fx:id="usernameColumnDel" text="Имя пользователя" />
+               <TableColumn fx:id="deleteColumn" text="Удалить" />
+            </columns>
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+         </TableView>
+      </AnchorPane>
    </children>
 </AnchorPane>
