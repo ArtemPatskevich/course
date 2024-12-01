@@ -1,6 +1,8 @@
 package main.utils.tcp;
 
+import main.enums.entityAttributes.RoleName;
 import main.enums.status.RegistrationStatus;
+import main.enums.status.ServerResponseStatus;
 import main.models.dto.Client;
 import main.models.dto.Request;
 import main.models.dto.User;
@@ -68,4 +70,21 @@ public class ServerResponse {
         output.writeObject(userRepository.findByUsername(username).toUser());
     }
 
+    public void getUsers(ObjectOutputStream output) throws IOException, ClassNotFoundException {
+        List<User> users = userRepository.findAllByRole(RoleName.CLIENT).stream()
+                                                                        .map(UserEntity::toUser)
+                                                                        .toList();
+        System.out.println(users);
+        output.writeObject(users);
+    }
+
+    public void deleteUserById(ObjectOutputStream output, ObjectInputStream input) throws IOException {
+        try {
+            int userId = (Integer) input.readObject();
+            userRepository.deleteById(userId);
+            output.writeObject(ServerResponseStatus.OK);
+        } catch(Exception e) {
+            output.writeObject(ServerResponseStatus.ERROR);
+        }
+    }
 }

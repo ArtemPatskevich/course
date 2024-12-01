@@ -15,6 +15,7 @@ import main.enums.entityAttributes.BodyType;
 import main.enums.entityAttributes.PetrolType;
 import main.enums.entityAttributes.RoleName;
 import main.enums.requests.ClientRequestType;
+import main.enums.status.ServerResponseStatus;
 import main.models.dto.*;
 import main.utils.UserSession;
 import main.utils.tcp.ClientRequest;
@@ -118,8 +119,23 @@ public class AdminPageController {
         });
     }
 
-    private void deleteUserOnServer(User user)
-    {}
+    private void deleteUserOnServer(User user) {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.DELETE_USER);
+            ClientRequest.output.writeObject(user.getId());
+            ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
+
+            //TODO
+            // success/error alert
+            if(status.equals(ServerResponseStatus.OK)) {
+            } else {
+
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void addUsersTable(List<User> users) {
         ObservableList<User> observableUsers = FXCollections.observableArrayList(users);
         usersTable.setItems(observableUsers);
@@ -128,9 +144,16 @@ public class AdminPageController {
         ObservableList<User> observableUsers = FXCollections.observableArrayList(users);
         usersTableDelete.setItems(observableUsers);
     }
+
     private List<User> getUsersFromServer() {
-        return List.of();
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_USERS);
+            return (List<User>) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
+
     private void handleUserControlSelection(String selectedValue) {
         if (selectedValue != null) {
             switch (selectedValue) {
@@ -250,6 +273,7 @@ public class AdminPageController {
             throw new RuntimeException(e);
         }
     }
+
     public void closePanels() {
         startPanel.setVisible(false);
         carControlPanel.setVisible(false);

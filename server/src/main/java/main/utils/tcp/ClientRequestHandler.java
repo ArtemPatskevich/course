@@ -36,6 +36,8 @@ public class ClientRequestHandler implements Runnable {
                     case AUTHORIZE_USER -> serverResponse.authorizeUser(output, input);
                     case GET_REQUESTS -> serverResponse.getRequests(output);
                     case GET_USER_BY_USERNAME -> serverResponse.getUserByUsername(output, input);
+                    case GET_USERS -> serverResponse.getUsers(output);
+                    case DELETE_USER -> serverResponse.deleteUserById(output, input);
                 }
             }
         } catch (SocketException e) {
