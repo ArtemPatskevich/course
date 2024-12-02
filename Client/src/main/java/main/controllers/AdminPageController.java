@@ -1,5 +1,6 @@
 package main.controllers;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,8 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.converter.DoubleStringConverter;
 import main.enums.entityAttributes.BodyType;
 import main.enums.entityAttributes.PetrolType;
 import main.enums.entityAttributes.RoleName;
@@ -75,16 +78,54 @@ public class AdminPageController {
     private TableColumn<User, Void> deleteColumn;
 
     @FXML
+    private AnchorPane deleteCarPanel;
+    @FXML
+    private TableView<Car> carsTableDelete;
+    @FXML
+    private TableColumn<Car, String> brandColumnDel;
+    @FXML
+    private TableColumn<Car, String> priceColumnDel;
+    @FXML
+    private TableColumn<Car, String> carTypeColumnDel;
+    @FXML
+    private TableColumn<Car, String> fuelTypeColumnDel;
+    @FXML
+    private TableColumn<Car, Void> deleteCarsColumn;
+
+    @FXML
+    private AnchorPane updateCarPanel;
+    @FXML
+    private TableView<Car> carsTableUpdate;
+    @FXML
+    private TableColumn<Car, String> brandColumnUpd;
+    @FXML
+    private TableColumn<Car, Double> priceColumnUpd;
+    @FXML
+    private TableColumn<Car, String> carTypeColumnUpd;
+    @FXML
+    private TableColumn<Car, String> fuelTypeColumnUpd;
+    @FXML
+    private TableColumn<Car, Void> CarsColumnUpd;
+
+    @FXML
     public void initialize() {
         makingReport.setOnAction(event -> generateReport());
         logOut.setOnAction(event -> logOut(event));
         setupUserControlListener();
         initializeTableColumns();
         initializeDeleteTableColumns();
+        initializeDeleteCarsTableColumns();
+        initializeUpdateTableColumns();
+        setupCarControlListener();
     }
     private void setupUserControlListener() {
         userControl.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             handleUserControlSelection(newValue);
+        });
+    }
+    private void setupCarControlListener() {
+        carControl.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            handleCarControlSelection(newValue);
         });
     }
     private void initializeTableColumns() {
@@ -118,7 +159,108 @@ public class AdminPageController {
             }
         });
     }
+    private void initializeDeleteCarsTableColumns() {
+        brandColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBrand()));
+        priceColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCost())));
+        carTypeColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBodyType().toString()));
+        fuelTypeColumnDel.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPetrolType().toString()));
 
+        deleteCarsColumn.setCellFactory(col -> new TableCell<Car, Void>() {
+            private final Button deleteButton = new Button("Удалить");
+
+            {
+                deleteButton.setOnAction(event -> {
+                    Car car = getTableView().getItems().get(getIndex());
+                    boolean isDeleted = deleteCarOnServer(car);
+                    if(isDeleted)
+                    {
+                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                        successAlert.setTitle("Успех");
+                        successAlert.setHeaderText(null);
+                        successAlert.setContentText("Автомобиль успешно удалён.");
+                        successAlert.showAndWait();
+                    } else {
+                        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                        errorAlert.setTitle("Ошибка");
+                        errorAlert.setHeaderText(null);
+                        errorAlert.setContentText("Не удалось удалить автомобиль. Попробуйте ещё раз.");
+                        errorAlert.showAndWait();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
+                }
+            }
+        });
+    }
+    private void initializeUpdateTableColumns() {
+        brandColumnUpd.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBrand()));
+        priceColumnUpd.setCellValueFactory(cellData ->
+                new SimpleDoubleProperty(cellData.getValue().getCost()).asObject()
+        );
+        carTypeColumnUpd.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBodyType().toString()));
+        fuelTypeColumnUpd.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPetrolType().toString()));
+
+        brandColumnUpd.setCellFactory(TextFieldTableCell.forTableColumn());
+        priceColumnUpd.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        carTypeColumnUpd.setCellFactory(TextFieldTableCell.forTableColumn());
+        fuelTypeColumnUpd.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        brandColumnUpd.setOnEditCommit(event -> {
+            Car car = event.getRowValue();
+            car.setBrand(event.getNewValue());
+        });
+
+        priceColumnUpd.setOnEditCommit(event -> {
+            Car car = event.getRowValue();
+            car.setCost(event.getNewValue());
+        });
+
+        carTypeColumnUpd.setOnEditCommit(event -> {
+            Car car = event.getRowValue();
+            BodyType newBodyType = BodyType.valueOf(event.getNewValue().toUpperCase());
+            car.setBodyType(newBodyType);
+        });
+
+        fuelTypeColumnUpd.setOnEditCommit(event -> {
+            Car car = event.getRowValue();
+            PetrolType newPetrolType = PetrolType.valueOf(event.getNewValue().toUpperCase());
+            car.setPetrolType(newPetrolType);
+        });
+
+        CarsColumnUpd.setCellFactory(col -> new TableCell<Car, Void>() {
+            private final Button updateButton = new Button("Обновить");
+            {
+                updateButton.setOnAction(event -> {
+                    Car car = getTableView().getItems().get(getIndex());
+                    updateCar(car);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(updateButton);
+                }
+            }
+        });
+
+        carsTableUpdate.setEditable(true);
+    }
+    private boolean deleteCarOnServer(Car car)
+    {
+        return true;
+    }
     private void deleteUserOnServer(User user) {
         try {
             ClientRequest.sendRequestType(ClientRequestType.DELETE_USER);
@@ -144,6 +286,14 @@ public class AdminPageController {
         ObservableList<User> observableUsers = FXCollections.observableArrayList(users);
         usersTableDelete.setItems(observableUsers);
     }
+    private void addCarsToDeleteTable(List<Car> cars) {
+        ObservableList<Car> observableCars = FXCollections.observableArrayList(cars);
+        carsTableDelete.setItems(observableCars);
+    }
+    private void addCarsToUpdateTable(List<Car> cars) {
+        ObservableList<Car> observableCars = FXCollections.observableArrayList(cars);
+        carsTableUpdate.setItems(observableCars);
+    }
 
     private List<User> getUsersFromServer() {
         try {
@@ -152,6 +302,11 @@ public class AdminPageController {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<Car> getCarsFromServer()
+    {
+        return new ArrayList<>();
     }
 
     private void handleUserControlSelection(String selectedValue) {
@@ -171,7 +326,34 @@ public class AdminPageController {
         }
     }
 
+    private void handleCarControlSelection(String selectedValue) {
+        if (selectedValue != null) {
+            switch (selectedValue) {
+                case "Просмотреть автомобили":
+                    closePanels();
+                    break;
+                case "Удалить автомобили":
+                    closePanels();
+                    deleteCarPanel.setVisible(true);
+                    addCarsToDeleteTable(getCarsFromServer());
+                    break;
+                case "Добавить автомобиль":
+                    closePanels();
+                    break;
+                case "Изменить автомобиль":
+                    closePanels();
+                    updateCarPanel.setVisible(true);
+                    addCarsToUpdateTable(getCarsFromServer());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
+    private void updateCar(Car car) {
+        System.out.println("Обновление автомобиля: " + car);
+    }
 
     private void generateReport() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -279,5 +461,6 @@ public class AdminPageController {
         carControlPanel.setVisible(false);
         checkUserPanel.setVisible(false);
         deleteUserPanel.setVisible(false);
+        deleteCarPanel.setVisible(false);
     }
 }
