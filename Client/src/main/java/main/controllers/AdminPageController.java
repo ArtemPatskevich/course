@@ -1,6 +1,7 @@
 package main.controllers;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -101,9 +103,9 @@ public class AdminPageController {
     @FXML
     private TableColumn<Car, Double> priceColumnUpd;
     @FXML
-    private TableColumn<Car, String> carTypeColumnUpd;
+    private TableColumn<Car, BodyType> carTypeColumnUpd;
     @FXML
-    private TableColumn<Car, String> fuelTypeColumnUpd;
+    private TableColumn<Car, PetrolType> fuelTypeColumnUpd;
     @FXML
     private TableColumn<Car, Void> CarsColumnUpd;
 
@@ -202,41 +204,32 @@ public class AdminPageController {
     }
     private void initializeUpdateTableColumns() {
         brandColumnUpd.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBrand()));
-        priceColumnUpd.setCellValueFactory(cellData ->
-                new SimpleDoubleProperty(cellData.getValue().getCost()).asObject()
-        );
-        carTypeColumnUpd.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBodyType().toString()));
-        fuelTypeColumnUpd.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPetrolType().toString()));
+        priceColumnUpd.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getCost()).asObject());
+        carTypeColumnUpd.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getBodyType()));
+        fuelTypeColumnUpd.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPetrolType()));
 
         brandColumnUpd.setCellFactory(TextFieldTableCell.forTableColumn());
         priceColumnUpd.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
-        carTypeColumnUpd.setCellFactory(TextFieldTableCell.forTableColumn());
-        fuelTypeColumnUpd.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        brandColumnUpd.setOnEditCommit(event -> {
-            Car car = event.getRowValue();
-            car.setBrand(event.getNewValue());
-        });
-
-        priceColumnUpd.setOnEditCommit(event -> {
-            Car car = event.getRowValue();
-            car.setCost(event.getNewValue());
-        });
-
+        carTypeColumnUpd.setCellFactory(ComboBoxTableCell.forTableColumn(FXCollections.observableArrayList(BodyType.values())));
         carTypeColumnUpd.setOnEditCommit(event -> {
             Car car = event.getRowValue();
-            BodyType newBodyType = BodyType.valueOf(event.getNewValue().toUpperCase());
-            car.setBodyType(newBodyType);
+            if (event.getNewValue() != null) {
+                car.setBodyType(event.getNewValue());
+            }
         });
 
+        fuelTypeColumnUpd.setCellFactory(ComboBoxTableCell.forTableColumn(FXCollections.observableArrayList(PetrolType.values())));
         fuelTypeColumnUpd.setOnEditCommit(event -> {
             Car car = event.getRowValue();
-            PetrolType newPetrolType = PetrolType.valueOf(event.getNewValue().toUpperCase());
-            car.setPetrolType(newPetrolType);
+            if (event.getNewValue() != null) {
+                car.setPetrolType(event.getNewValue());
+            }
         });
 
         CarsColumnUpd.setCellFactory(col -> new TableCell<Car, Void>() {
             private final Button updateButton = new Button("Обновить");
+
             {
                 updateButton.setOnAction(event -> {
                     Car car = getTableView().getItems().get(getIndex());
