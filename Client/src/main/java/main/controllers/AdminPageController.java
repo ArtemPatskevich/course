@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import main.enums.entityAttributes.BodyType;
@@ -26,6 +27,7 @@ import main.utils.UserSession;
 import main.utils.tcp.ClientRequest;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -110,6 +112,23 @@ public class AdminPageController {
     private TableColumn<Car, Void> CarsColumnUpd;
 
     @FXML
+    private AnchorPane addCarPanel;
+    @FXML
+    private ComboBox<BodyType> carTypeChoose;
+    @FXML
+    private ComboBox<PetrolType> petrolTypeChoose;
+    @FXML
+    private TextField brandField;
+    @FXML
+    private TextField carCostField;
+    @FXML
+    private Button chooseCarFile;
+    @FXML
+    private Button addCarButton;
+
+    String selectedFilePath = "";
+
+    @FXML
     public void initialize() {
         makingReport.setOnAction(event -> generateReport());
         logOut.setOnAction(event -> logOut(event));
@@ -119,6 +138,15 @@ public class AdminPageController {
         initializeDeleteCarsTableColumns();
         initializeUpdateTableColumns();
         setupCarControlListener();
+
+        chooseCarFile.setOnAction(event -> openFileChooser());
+
+        for (BodyType type : BodyType.values()) {
+            carTypeChoose.getItems().add(type);
+        }
+        for (PetrolType type : PetrolType.values()) {
+            petrolTypeChoose.getItems().add(type);
+        }
     }
     private void setupUserControlListener() {
         userControl.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -270,7 +298,6 @@ public class AdminPageController {
             throw new RuntimeException(e);
         }
     }
-
     private void addUsersTable(List<User> users) {
         ObservableList<User> observableUsers = FXCollections.observableArrayList(users);
         usersTable.setItems(observableUsers);
@@ -332,6 +359,8 @@ public class AdminPageController {
                     break;
                 case "Добавить автомобиль":
                     closePanels();
+                    addCarPanel.setVisible(true);
+                    handleAddCar();
                     break;
                 case "Изменить автомобиль":
                     closePanels();
@@ -342,6 +371,66 @@ public class AdminPageController {
                     break;
             }
         }
+    }
+    private void handleAddCar() {
+        String brand = brandField.getText().trim();
+        String costStr = carCostField.getText().trim();
+        BodyType selectedCarType = carTypeChoose.getValue();
+        PetrolType selectedPetrolType = petrolTypeChoose.getValue();
+
+        boolean isCorrect = true;
+
+        if (brand.isEmpty() || costStr.isEmpty() || selectedCarType == null || selectedPetrolType == null) {
+            showAlert("Ошибка", "Пожалуйста, заполните все поля.");
+            isCorrect = false;
+            return;
+        }
+        double cost= 0;
+        try {
+             cost = Double.parseDouble(costStr);
+            System.out.println("Car added: " + brand + ", Cost: " + cost + ", Type: " + selectedCarType + ", Petrol: " + selectedPetrolType);
+        } catch (NumberFormatException e) {
+            showAlert("Ошибка", "Стоимость должна быть числом.");
+            isCorrect = false;
+        }
+        if (isCorrect)
+        {
+            Car car = new Car(brand,cost,selectedPetrolType,selectedCarType,selectedFilePath);
+            boolean added = addCarToSystem(car);
+
+            if(added)
+            {
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Успешное добавление");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Автомобиль успешно добавлен.");
+                successAlert.showAndWait();
+                clearFields();
+            }
+            else {
+                showAlert("Ошибка", "Некорректное добавление");
+                clearFields();
+            }
+        }
+    }
+
+    private boolean addCarToSystem(Car car)
+    {
+        return true;
+    }
+    private void clearFields() {
+        brandField.clear();
+        carCostField.clear();
+        carTypeChoose.getSelectionModel().clearSelection();
+        petrolTypeChoose.getSelectionModel().clearSelection();
+        selectedFilePath = "";
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void updateCar(Car car) {
@@ -455,5 +544,21 @@ public class AdminPageController {
         checkUserPanel.setVisible(false);
         deleteUserPanel.setVisible(false);
         deleteCarPanel.setVisible(false);
+        addCarPanel.setVisible(false);
+    }
+    private void openFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Выберите изображение");
+        FileChooser.ExtensionFilter imageFilter =
+                new FileChooser.ExtensionFilter("Изображения (*.png, *.jpg, *.jpeg)", "*.png", "*.jpg", "*.jpeg");
+        fileChooser.getExtensionFilters().add(imageFilter);
+        File file = fileChooser.showOpenDialog(chooseCarFile.getScene().getWindow());
+
+        if (file != null) {
+            selectedFilePath = file.getAbsolutePath();
+            System.out.println(selectedFilePath);
+        } else {
+            System.out.println("file not choosen");
+        }
     }
 }

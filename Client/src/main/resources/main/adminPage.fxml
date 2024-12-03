@@ -7,10 +7,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.AdminPageController">
+<AnchorPane prefHeight="700.0" prefWidth="1100.0"  stylesheets="@adminPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.AdminPageController">
    <children>
       <AnchorPane prefHeight="123.0" prefWidth="1100.0" style="-fx-background-color: #000000;">
          <children>
@@ -50,7 +51,7 @@
          </children>
       </AnchorPane>
       <AnchorPane fx:id="carControlPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false" />
-      <AnchorPane fx:id="startPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0">
+      <AnchorPane fx:id="startPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
          <children>
             <Label layoutX="60.0" layoutY="257.0" text="Добро пожаловать в панель администратора!">
                <font>
@@ -113,6 +114,37 @@
                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
          </TableView>
+      </AnchorPane>
+      <AnchorPane fx:id="addCarPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0">
+         <children>
+            <Label layoutX="410.0" layoutY="31.0" text="Добавление авто">
+               <font>
+                  <Font name="System Bold" size="33.0" />
+               </font>
+            </Label>
+            <Button fx:id="chooseCarFile" layoutX="436.0" layoutY="325.0" mnemonicParsing="false" style="-fx-background-color: BLACK;" text="Выбор фотографии авто" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+            <TextField fx:id="brandField" layoutX="182.0" layoutY="151.0" prefHeight="38.0" prefWidth="228.0" promptText="Брэнд" style="-fx-background-color: BLACK;">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="carCostField" layoutX="182.0" layoutY="235.0" prefHeight="38.0" prefWidth="228.0" promptText="Стоимость" style="-fx-background-color: BLACK;">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </TextField>
+            <Button fx:id="addCarButton" layoutX="400.0" layoutY="421.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="301.0" style="-fx-background-color: BLACK;" text="Добавление авто в систему" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Button>
+            <ComboBox fx:id="carTypeChoose" layoutX="691.0" layoutY="151.0" prefHeight="38.0" prefWidth="228.0" promptText="Тип автомобиля" styleClass="combo-box" />
+            <ComboBox fx:id="petrolTypeChoose" layoutX="691.0" layoutY="235.0" prefHeight="38.0" prefWidth="228.0" promptText="Тип топлива" styleClass="combo-box" />
+         </children>
       </AnchorPane>
    </children>
 </AnchorPane>

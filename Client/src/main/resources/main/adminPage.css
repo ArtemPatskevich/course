@@ -1,0 +1,15 @@
+.text-field {
+    -fx-text-fill: WHITE; /* Set text color to white */
+    -fx-font-weight: bold; /* Set font weight to bold */
+}
+
+.combo-box {
+    -fx-background-color: BLACK; /* Set background color */
+    -fx-text-fill: WHITE; /* Set text color to white */
+    -fx-font-weight: bold; /* Set font weight to bold */
+}
+
+.combo-box .prompt-text {
+    -fx-text-fill: WHITE; /* Set prompt text color to white */
+    -fx-font-weight: bold; /* Set prompt text weight to bold */
+}
