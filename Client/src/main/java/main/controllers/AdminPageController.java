@@ -278,10 +278,13 @@ public class AdminPageController {
 
         carsTableUpdate.setEditable(true);
     }
+
+    //TODO
     private boolean deleteCarOnServer(Car car)
     {
         return true;
     }
+
     private void deleteUserOnServer(User user) {
         try {
             ClientRequest.sendRequestType(ClientRequestType.DELETE_USER);
@@ -291,8 +294,15 @@ public class AdminPageController {
             //TODO
             // success/error alert
             if(status.equals(ServerResponseStatus.OK)) {
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Успех");
+                successAlert.setHeaderText("Пользователь успешно удален");
+                successAlert.showAndWait();
             } else {
-
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Ошибка");
+                errorAlert.setHeaderText("Не удалось удалить пользователя!");
+                errorAlert.showAndWait();
             }
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -324,6 +334,7 @@ public class AdminPageController {
         }
     }
 
+    //TODO
     private List<Car> getCarsFromServer()
     {
         return new ArrayList<>();
@@ -372,6 +383,7 @@ public class AdminPageController {
             }
         }
     }
+
     private void handleAddCar() {
         String brand = brandField.getText().trim();
         String costStr = carCostField.getText().trim();
@@ -414,10 +426,12 @@ public class AdminPageController {
         }
     }
 
+    //TODO
     private boolean addCarToSystem(Car car)
     {
         return true;
     }
+
     private void clearFields() {
         brandField.clear();
         carCostField.clear();
@@ -433,6 +447,7 @@ public class AdminPageController {
         alert.showAndWait();
     }
 
+    //TODO
     private void updateCar(Car car) {
         System.out.println("Обновление автомобиля: " + car);
     }
