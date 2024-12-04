@@ -57,13 +57,13 @@ public class AuthorizationController {
         RoleName userRole = user.getRole().getRolename();
         switch (userRole) {
             case CLIENT:
-                handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 800,700, false, true);
+                handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 1100,700, false, false);
                 break;
             case ADMIN:
-                handlePage(event, "adminPage.fxml", "PaTaaRS_Auto", 800,700, false, true);
+                handlePage(event, "adminPage.fxml", "PaTaaRS_Auto", 1100,700, false, false);
                 break;
             case MANAGER:
-                handlePage(event, "managerPage.fxml", "PaTaaRS_Auto", 800,700, false, true);
+                handlePage(event, "managerPage.fxml", "PaTaaRS_Auto", 1100,700, false, false);
                 break;
             default:
                 System.out.println("Unknown role");
