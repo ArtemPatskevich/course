@@ -7,7 +7,7 @@ import main.models.dto.User;
 public class UserSession {
     private static UserSession instance = null;
 
-    private int id;
+    private User user;
 
     public static UserSession getInstance() {
         if(instance == null) {
@@ -17,11 +17,11 @@ public class UserSession {
     }
 
     public void fillIn(User user) {
-        this.id = user.getId();
+        this.user = user;
     }
 
     public void logOut() {
-        this.id = 0;
+        this.user = null;
         instance = null;
     }
 }

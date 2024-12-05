@@ -156,7 +156,6 @@ public class RegistrationController {
             handlePage(event, "userPage.fxml", "PaTaaRS_Auto", 1100,700, false, false);
             clearFields();
         }
-        System.out.println(UserSession.getInstance().getId());
     }
 
     private boolean isValidName(String name) {
