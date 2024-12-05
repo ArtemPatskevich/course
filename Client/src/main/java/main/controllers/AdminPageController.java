@@ -138,6 +138,7 @@ public class AdminPageController {
         initializeDeleteCarsTableColumns();
         initializeUpdateTableColumns();
         setupCarControlListener();
+        addCarButton.setOnAction(event -> handleAddCar());
 
         chooseCarFile.setOnAction(event -> openFileChooser());
 
@@ -376,7 +377,6 @@ public class AdminPageController {
                 case "Добавить автомобиль":
                     closePanels();
                     addCarPanel.setVisible(true);
-                    handleAddCar();
                     break;
                 case "Изменить автомобиль":
                     closePanels();
