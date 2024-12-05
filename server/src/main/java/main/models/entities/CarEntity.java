@@ -1,16 +1,16 @@
 package main.models.entities;
 
+import lombok.*;
 import main.enums.entityAttributes.BodyType;
 import main.enums.entityAttributes.PetrolType;
 import main.models.dto.Car;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "car")
 public class CarEntity {

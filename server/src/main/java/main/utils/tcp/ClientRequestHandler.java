@@ -38,6 +38,10 @@ public class ClientRequestHandler implements Runnable {
                     case GET_USER_BY_USERNAME -> serverResponse.getUserByUsername(output, input);
                     case GET_USERS -> serverResponse.getUsers(output);
                     case DELETE_USER -> serverResponse.deleteUserById(output, input);
+                    case DELETE_CAR -> serverResponse.deleteCarById(output, input);
+                    case GET_CARS -> serverResponse.getCars(output);
+                    case ADD_CAR -> serverResponse.addCar(output, input);
+                    case UPDATE_CAR -> serverResponse.updateCar(output, input);
                 }
             }
         } catch (SocketException e) {

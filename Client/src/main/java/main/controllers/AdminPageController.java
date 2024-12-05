@@ -202,8 +202,7 @@ public class AdminPageController {
                 deleteButton.setOnAction(event -> {
                     Car car = getTableView().getItems().get(getIndex());
                     boolean isDeleted = deleteCarOnServer(car);
-                    if(isDeleted)
-                    {
+                    if(isDeleted) {
                         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                         successAlert.setTitle("Успех");
                         successAlert.setHeaderText(null);
@@ -279,10 +278,15 @@ public class AdminPageController {
         carsTableUpdate.setEditable(true);
     }
 
-    //TODO
-    private boolean deleteCarOnServer(Car car)
-    {
-        return true;
+    private boolean deleteCarOnServer(Car car) {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.DELETE_CAR);
+            ClientRequest.output.writeObject(car);
+            ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
+            return status.equals(ServerResponseStatus.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            return false;
+        }
     }
 
     private void deleteUserOnServer(User user) {
@@ -291,8 +295,6 @@ public class AdminPageController {
             ClientRequest.output.writeObject(user.getId());
             ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
 
-            //TODO
-            // success/error alert
             if(status.equals(ServerResponseStatus.OK)) {
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Успех");
@@ -330,14 +332,17 @@ public class AdminPageController {
             ClientRequest.sendRequestType(ClientRequestType.GET_USERS);
             return (List<User>) ClientRequest.input.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            return new ArrayList<>();
         }
     }
 
-    //TODO
-    private List<Car> getCarsFromServer()
-    {
-        return new ArrayList<>();
+    private List<Car> getCarsFromServer() {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_CARS);
+            return (List<Car>) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
     }
 
     private void handleUserControlSelection(String selectedValue) {
@@ -427,9 +432,16 @@ public class AdminPageController {
     }
 
     //TODO
-    private boolean addCarToSystem(Car car)
-    {
-        return true;
+    private boolean addCarToSystem(Car car) {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.ADD_CAR);
+            ClientRequest.output.writeObject(car);
+            ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
+
+            return status.equals(ServerResponseStatus.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            return false;
+        }
     }
 
     private void clearFields() {
@@ -447,9 +459,26 @@ public class AdminPageController {
         alert.showAndWait();
     }
 
-    //TODO
     private void updateCar(Car car) {
-        System.out.println("Обновление автомобиля: " + car);
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.UPDATE_CAR);
+            ClientRequest.output.writeObject(car);
+            ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
+
+            if(status.equals(ServerResponseStatus.OK)) {
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Успех");
+                successAlert.setHeaderText("Автомобиль успешно обновлен");
+                successAlert.showAndWait();
+            } else {
+                Alert successAlert = new Alert(Alert.AlertType.ERROR);
+                successAlert.setTitle("Ошибка");
+                successAlert.setHeaderText("Не удалось обновить автомобиль!");
+                successAlert.showAndWait();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException();
+        }
     }
 
     private void generateReport() {

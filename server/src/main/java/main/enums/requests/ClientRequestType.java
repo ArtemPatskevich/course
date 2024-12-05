@@ -9,4 +9,7 @@ public enum ClientRequestType {
     GET_REQUESTS,
     GET_USER_BY_USERNAME,
     DELETE_USER,
+    DELETE_CAR,
+    ADD_CAR,
+    UPDATE_CAR,
 }

@@ -3,10 +3,13 @@ package main.utils.tcp;
 import main.enums.entityAttributes.RoleName;
 import main.enums.status.RegistrationStatus;
 import main.enums.status.ServerResponseStatus;
+import main.models.dto.Car;
 import main.models.dto.Client;
 import main.models.dto.Request;
 import main.models.dto.User;
+import main.models.entities.CarEntity;
 import main.models.entities.UserEntity;
+import main.repositories.CarRepository;
 import main.repositories.UserRepository;
 import main.services.ClientService;
 import main.services.RequestService;
@@ -19,6 +22,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class ServerResponse {
     private final UserService userService;
     private final ClientService clientService;
     private final UserRepository userRepository;
+    private final CarRepository carRepository;
 
     public void getRequests(ObjectOutputStream output) throws IOException {
         List<Request> requests = requestService.getRequests();
@@ -84,6 +89,55 @@ public class ServerResponse {
             userRepository.deleteById(userId);
             output.writeObject(ServerResponseStatus.OK);
         } catch(Exception e) {
+            output.writeObject(ServerResponseStatus.ERROR);
+        }
+    }
+
+    public void deleteCarById(ObjectOutputStream output, ObjectInputStream input) throws IOException {
+        try {
+            Car car = (Car) input.readObject();
+            carRepository.deleteById(car.getId());
+            output.writeObject(ServerResponseStatus.OK);
+        } catch (Exception e) {
+            output.writeObject(ServerResponseStatus.ERROR);
+        }
+    }
+
+    public void getCars(ObjectOutputStream output) throws IOException {
+        Stream<CarEntity> carStream = ((List<CarEntity>) carRepository.findAll()).stream();
+        List<Car> cars = carStream.map(CarEntity::toCar).toList();
+        output.writeObject(cars);
+    }
+
+    public void addCar(ObjectOutputStream output, ObjectInputStream input) throws IOException {
+        try {
+            Car car = (Car) input.readObject();
+            carRepository.save(new CarEntity(car.getId(),
+                                            car.getBrand(),
+                                            car.getCost(),
+                                            car.getPetrolType(),
+                                            car.getBodyType(),
+                                            car.getImagePath())
+            );
+            output.writeObject(ServerResponseStatus.OK);
+        } catch (Exception e) {
+            output.writeObject(ServerResponseStatus.ERROR);
+        }
+    }
+
+    public void updateCar(ObjectOutputStream output, ObjectInputStream input) throws IOException {
+        try {
+            Car car = (Car) input.readObject();
+            CarEntity carEntity = new CarEntity(car.getId(),
+                                            car.getBrand(),
+                                            car.getCost(),
+                                            car.getPetrolType(),
+                                            car.getBodyType(),
+                                            car.getImagePath()
+            );
+            carRepository.save(carEntity);
+            output.writeObject(ServerResponseStatus.OK);
+        } catch (Exception e) {
             output.writeObject(ServerResponseStatus.ERROR);
         }
     }
