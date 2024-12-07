@@ -43,6 +43,7 @@ public class ClientRequestHandler implements Runnable {
                     case ADD_CAR -> serverResponse.addCar(output, input);
                     case UPDATE_CAR -> serverResponse.updateCar(output, input);
                     case GET_TEST_DRIVES -> serverResponse.getTestDrives(output);
+                    case ADD_REQUEST -> serverResponse.addRequest(output, input);
                 }
             }
         } catch (SocketException e) {

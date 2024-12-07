@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import main.enums.requests.ClientRequestType;
+import main.enums.status.ServerResponseStatus;
 import main.models.dto.Request;
 import main.models.dto.TestDrive;
 import main.models.dto.User;
@@ -303,7 +304,6 @@ public class ManagerPageController {
         }
     }
 
-    // TODO
     private List<TestDrive> getTestDrivesFromServer() {
         try {
             ClientRequest.sendRequestType(ClientRequestType.GET_TEST_DRIVES);
@@ -313,9 +313,16 @@ public class ManagerPageController {
         }
     }
 
-    // TODO
     private boolean sendRequestToServer(Request req) {
-        return true;
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.ADD_REQUEST);
+            ClientRequest.output.writeObject(req);
+            ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
+
+            return status.equals(ServerResponseStatus.OK);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private void hideAllPanels()

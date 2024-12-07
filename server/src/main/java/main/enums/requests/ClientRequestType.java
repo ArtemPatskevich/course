@@ -13,4 +13,5 @@ public enum ClientRequestType {
     ADD_CAR,
     UPDATE_CAR,
     GET_TEST_DRIVES,
+    ADD_REQUEST,
 }

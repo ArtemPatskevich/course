@@ -431,7 +431,6 @@ public class AdminPageController {
         }
     }
 
-    //TODO
     private boolean addCarToSystem(Car car) {
         try {
             ClientRequest.sendRequestType(ClientRequestType.ADD_CAR);

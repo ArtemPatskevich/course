@@ -5,9 +5,11 @@ import main.enums.status.RegistrationStatus;
 import main.enums.status.ServerResponseStatus;
 import main.models.dto.*;
 import main.models.entities.CarEntity;
+import main.models.entities.RequestEntity;
 import main.models.entities.TestDriveEntity;
 import main.models.entities.UserEntity;
 import main.repositories.CarRepository;
+import main.repositories.RequestRepository;
 import main.repositories.TestDriveRepository;
 import main.repositories.UserRepository;
 import main.services.ClientService;
@@ -32,6 +34,7 @@ public class ServerResponse {
     private final UserRepository userRepository;
     private final CarRepository carRepository;
     private final TestDriveRepository testDriveRepository;
+    private final RequestRepository requestRepository;
 
     public void getRequests(ObjectOutputStream output) throws IOException {
         List<Request> requests = requestService.getRequests();
@@ -146,5 +149,15 @@ public class ServerResponse {
         Stream<TestDriveEntity> stream = ((List<TestDriveEntity>) testDriveRepository.findAll()).stream();
         List<TestDrive> testDrives = stream.map(TestDriveEntity::toTestDrive).toList();
         output.writeObject(testDrives);
+    }
+
+    public void addRequest(ObjectOutputStream output, ObjectInputStream input) throws IOException {
+        try {
+            Request request = (Request) input.readObject();
+            requestRepository.save(new RequestEntity(request));
+            output.writeObject(ServerResponseStatus.OK);
+        } catch (Exception e) {
+            output.writeObject(ServerResponseStatus.ERROR);
+        }
     }
 }

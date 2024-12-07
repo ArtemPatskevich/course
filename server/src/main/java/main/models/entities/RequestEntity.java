@@ -1,5 +1,6 @@
 package main.models.entities;
 
+import lombok.NoArgsConstructor;
 import main.models.dto.*;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "request")
 public class RequestEntity {
@@ -48,6 +50,16 @@ public class RequestEntity {
 
     @Column(name = "approve_date", columnDefinition = "DATETIME")
     private LocalDateTime approvedDate;
+
+    public RequestEntity(Request request) {
+        this.id = request.getId();
+        this.isApproved = request.isApproved();
+        this.clientId = request.getClient().getId();
+        this.carId = request.getCar().getId();
+        this.managerId = request.getManager().getId();
+        this.sendDate = request.getSendDate();
+        this.approvedDate = request.getApprovedDate();
+    }
 
     public Request toRequest() {
         return new Request(id, isApproved,
