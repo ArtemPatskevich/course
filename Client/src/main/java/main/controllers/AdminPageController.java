@@ -578,7 +578,7 @@ public class AdminPageController {
             ClientRequest.sendRequestType(ClientRequestType.GET_REQUESTS);
             return (List<Request>) ClientRequest.input.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            return new ArrayList<>();
         }
     }
 

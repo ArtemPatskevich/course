@@ -12,4 +12,5 @@ public enum ClientRequestType {
     DELETE_CAR,
     ADD_CAR,
     UPDATE_CAR,
+    GET_TEST_DRIVES,
 }

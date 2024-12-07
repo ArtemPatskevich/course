@@ -3,13 +3,12 @@ package main.utils.tcp;
 import main.enums.entityAttributes.RoleName;
 import main.enums.status.RegistrationStatus;
 import main.enums.status.ServerResponseStatus;
-import main.models.dto.Car;
-import main.models.dto.Client;
-import main.models.dto.Request;
-import main.models.dto.User;
+import main.models.dto.*;
 import main.models.entities.CarEntity;
+import main.models.entities.TestDriveEntity;
 import main.models.entities.UserEntity;
 import main.repositories.CarRepository;
+import main.repositories.TestDriveRepository;
 import main.repositories.UserRepository;
 import main.services.ClientService;
 import main.services.RequestService;
@@ -32,6 +31,7 @@ public class ServerResponse {
     private final ClientService clientService;
     private final UserRepository userRepository;
     private final CarRepository carRepository;
+    private final TestDriveRepository testDriveRepository;
 
     public void getRequests(ObjectOutputStream output) throws IOException {
         List<Request> requests = requestService.getRequests();
@@ -140,5 +140,11 @@ public class ServerResponse {
         } catch (Exception e) {
             output.writeObject(ServerResponseStatus.ERROR);
         }
+    }
+
+    public void getTestDrives(ObjectOutputStream output) throws IOException {
+        Stream<TestDriveEntity> stream = ((List<TestDriveEntity>) testDriveRepository.findAll()).stream();
+        List<TestDrive> testDrives = stream.map(TestDriveEntity::toTestDrive).toList();
+        output.writeObject(testDrives);
     }
 }

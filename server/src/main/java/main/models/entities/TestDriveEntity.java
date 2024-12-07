@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import main.models.dto.TestDrive;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -33,5 +35,9 @@ public class TestDriveEntity {
     private Integer carId;
 
     @Column(name = "date", columnDefinition = "DATETIME")
-    private LocalDate date;
+    private LocalDateTime date;
+
+    public TestDrive toTestDrive() {
+        return new TestDrive(id, user.toUser(), car.toCar(), date);
+    }
 }

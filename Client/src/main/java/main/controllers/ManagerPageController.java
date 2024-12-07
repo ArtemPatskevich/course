@@ -11,10 +11,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import main.enums.requests.ClientRequestType;
 import main.models.dto.Request;
 import main.models.dto.TestDrive;
 import main.models.dto.User;
 import main.utils.UserSession;
+import main.utils.tcp.ClientRequest;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -268,6 +270,7 @@ public class ManagerPageController {
             errorAlert.showAndWait();
         }
     }
+
     private void initializeTestDriveTable() {
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
@@ -290,18 +293,31 @@ public class ManagerPageController {
             return new SimpleStringProperty(formattedDate);
         });
     }
-    private List<Request> getRequestsFromServer()
-    {
-        return new ArrayList<>();
+
+    private List<Request> getRequestsFromServer() {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_REQUESTS);
+            return (List<Request>) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
     }
-    private List<TestDrive> getTestDrivesFromServer()
-    {
-        return new ArrayList<>();
+
+    // TODO
+    private List<TestDrive> getTestDrivesFromServer() {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_TEST_DRIVES);
+            return (List<TestDrive>) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
     }
-    private boolean sendRequestToServer(Request req)
-    {
+
+    // TODO
+    private boolean sendRequestToServer(Request req) {
         return true;
     }
+
     private void hideAllPanels()
     {
         carControlPanel.setVisible(false);
