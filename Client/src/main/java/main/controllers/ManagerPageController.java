@@ -118,7 +118,7 @@ public class ManagerPageController {
 
     private void handleCheckRequestsPanel() {
         hideAllPanels();
-        workingWithRequestsPanel.setVisible(true);
+        checkRequestsPanel.setVisible(true);
         refreshCheckRequestsTable();
     }
 
@@ -333,7 +333,7 @@ public class ManagerPageController {
         startPanel.setVisible(false);
         workingWithRequestsPanel.setVisible(false);
         checkTestDrivePanel.setVisible(false);
-        checkRequestsPanel.setVisible(false);;
+        checkRequestsPanel.setVisible(false);
     }
     private void logOut(javafx.event.ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
