@@ -298,7 +298,9 @@ public class ManagerPageController {
     private List<Request> getRequestsFromServer() {
         try {
             ClientRequest.sendRequestType(ClientRequestType.GET_REQUESTS);
-            return (List<Request>) ClientRequest.input.readObject();
+            List<Request> reqs = (List<Request>) ClientRequest.input.readObject();
+            System.out.println("here is: " + reqs);
+            return reqs;
         } catch (IOException | ClassNotFoundException e) {
             return new ArrayList<>();
         }
