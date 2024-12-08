@@ -202,17 +202,15 @@ public class ManagerPageController {
             return new SimpleStringProperty(fullName);
         });
 
+        usernameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getClient().getUser().getUsername()));
+        carNameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getCar().getBrand()));
+        phoneNumberColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getClient().getPhoneNumber()));
         passportNumberColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getClient().getPassportNumber()));
 
-        phoneNumberColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getClient().getPhoneNumber()));
-
-        usernameColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getClient().getUser().getUsername()));
-
-        carNameColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getCar().getBrand()));
         acceptRequestColumn.setCellFactory(col -> new TableCell<Request, Void>() {
             private final Button btn = new Button("Одобрить");
 

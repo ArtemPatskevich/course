@@ -57,9 +57,9 @@
             <TableView fx:id="requestsTable" layoutX="10.0" layoutY="10.0" prefHeight="550.0" prefWidth="1080.0">
                 <columns>
                     <TableColumn fx:id="firstNameLastNameColumn" text="Имя пользователя" />
-                    <TableColumn fx:id="passportNumberColumn" text="Номер паспорта" />
-                    <TableColumn fx:id="phoneNumberColumn" text="Номер телефона" />
                     <TableColumn fx:id="usernameColumn" text="Логин" />
+                    <TableColumn fx:id="phoneNumberColumn" text="Номер телефона" />
+                    <TableColumn fx:id="passportNumberColumn" text="Номер паспорта" />
                     <TableColumn fx:id="carNameColumn" text="Автомобиль" />
                     <TableColumn fx:id="acceptRequestColumn" text="Одобрить" />
                     <TableColumn fx:id="rejectRequestColumn" text="Отклонить" />
