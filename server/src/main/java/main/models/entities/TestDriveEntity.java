@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 import main.models.dto.TestDrive;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,13 +28,22 @@ public class TestDriveEntity {
     private CarEntity car;
 
     @Column(name = "user_id", columnDefinition = "INT")
-    private Integer uaerId;
+    private Integer userId;
 
     @Column(name = "car_id", columnDefinition = "INT")
     private Integer carId;
 
     @Column(name = "date", columnDefinition = "DATETIME")
     private LocalDateTime date;
+
+    public TestDriveEntity(TestDrive testDrive) {
+        this.id = testDrive.getId();
+        this.user = new UserEntity(testDrive.getUser());
+        this.car = new CarEntity(testDrive.getCar());
+        this.userId = testDrive.getUser().getId();
+        this.carId = testDrive.getCar().getId();
+        this.date = testDrive.getDate();
+    }
 
     public TestDrive toTestDrive() {
         return new TestDrive(id, user.toUser(), car.toCar(), date);

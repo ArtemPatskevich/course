@@ -36,6 +36,15 @@ public class CarEntity {
     @Column(name = "image_path", columnDefinition = "VARCHAR(100)")
     private String imagePath;
 
+    public CarEntity(Car car) {
+        this.id = car.getId();
+        this.brand = car.getBrand();
+        this.cost = car.getCost();
+        this.petrolType = car.getPetrolType();
+        this.bodyType = car.getBodyType();
+        this.imagePath = car.getImagePath();
+    }
+
     public Car toCar() {
         return new Car(id, brand, cost, petrolType, bodyType, imagePath);
     }

@@ -37,6 +37,16 @@ public class UserEntity {
     @Column(name = "role_id", columnDefinition = "INT")
     private Integer roleId;
 
+    public UserEntity(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.firstname = user.getFirstName();
+        this.lastname = user.getLastName();
+        this.role = new RoleEntity(user.getRole().getId(), user.getRole().getRolename());
+        this.roleId = user.getRole().getId();
+    }
+
     public User toUser() {
         return new User(id, username, password, firstname, lastname, new Role(role.getName()));
     }

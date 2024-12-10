@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -155,6 +156,16 @@ public class ServerResponse {
         try {
             Request request = (Request) input.readObject();
             requestRepository.save(new RequestEntity(request));
+            output.writeObject(ServerResponseStatus.OK);
+        } catch (Exception e) {
+            output.writeObject(ServerResponseStatus.ERROR);
+        }
+    }
+
+    public void addTestDrive(ObjectOutputStream output, ObjectInputStream input) throws IOException {
+        try {
+            TestDrive testDrive = (TestDrive) input.readObject();
+            testDriveRepository.save(new TestDriveEntity(testDrive));
             output.writeObject(ServerResponseStatus.OK);
         } catch (Exception e) {
             output.writeObject(ServerResponseStatus.ERROR);

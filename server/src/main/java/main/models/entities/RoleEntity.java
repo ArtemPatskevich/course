@@ -1,16 +1,16 @@
 package main.models.entities;
 
+import lombok.*;
 import main.enums.entityAttributes.RoleName;
 import main.models.dto.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "role")
 public class RoleEntity {
     @Id

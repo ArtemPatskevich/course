@@ -9,10 +9,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.enums.requests.ClientRequestType;
+import main.enums.status.ServerResponseStatus;
 import main.models.dto.Car;
 import main.models.dto.Request;
 import main.models.dto.TestDrive;
 import main.utils.UserSession;
+import main.utils.tcp.ClientRequest;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -162,14 +165,26 @@ public class UserPageController {
     }
 
     //ToDo
-    private List<Car> getCarsFromServer()
-    {
-        return new ArrayList<>();
+    private List<Car> getCarsFromServer() {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_CARS);
+            return (List<Car>) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
     }
+
     //ToDo
-    private boolean sendTestDriveToServer(TestDrive test)
-    {
-        return true;
+    private boolean sendTestDriveToServer(TestDrive test) {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.ADD_TEST_DRIVE);
+            ClientRequest.output.writeObject(test);
+
+            ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
+            return status.equals(ServerResponseStatus.OK);
+        } catch (IOException | ClassNotFoundException e) {
+            return false;
+        }
     }
 
 
