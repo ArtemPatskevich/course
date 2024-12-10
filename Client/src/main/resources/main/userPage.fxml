@@ -1,14 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main.controllers.UserPageController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" stylesheets="@adminPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.UserPageController">
+    <children>
+        <AnchorPane prefHeight="123.0" prefWidth="1100.0" style="-fx-background-color: #000000;">
+            <children>
+                <Label layoutX="14.0" layoutY="29.0" prefHeight="65.0" prefWidth="197.0" text="PaTaaRS_Auto" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="28.0" />
+                    </font>
+                </Label>
+                <Button fx:id="logOut" layoutX="1009.0" layoutY="49.0" mnemonicParsing="false" style="-fx-background-color: ORANGE;" text="Выход" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Button>
 
+                <ComboBox fx:id="checkCarBox" layoutX="247.0" layoutY="49.0" prefHeight="31.0" prefWidth="181.0" promptText="Просмотр авто" style="-fx-background-color: #FFFFFF;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="От самого дорогого к самому дешевому" />
+                            <String fx:value="От самого дешевого к самому дорогому" />
+                            <String fx:value="Сортировка по типу топлива" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <ComboBox fx:id="workWithTestDrivesBox" layoutX="510.0" layoutY="49.0" prefHeight="31.0" prefWidth="197.0" promptText="Работа с тест-драйвами" style="-fx-background-color: #FFFFFF;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Просмотр тест-драйвов" />
+                            <String fx:value="Запись на тест-драйв" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Button fx:id="checkRequests" layoutX="782.0" layoutY="51.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="146.0" style="-fx-background-color: #FFFFFF;" text="Просмотр заявок">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="startPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+            <children>
+                <Label layoutX="90.0" layoutY="257.0" text="Добро пожаловать в панель пользователя!">
+                    <font>
+                        <Font name="System Bold" size="43.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="carControlPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+            <ScrollPane fx:id="carsScrollPane" fitToWidth="true" layoutX="20.0" layoutY="29.0" prefHeight="544.0" prefWidth="1060.0">
+                <content>
+                    <VBox fx:id="carsContainer" alignment="TOP_CENTER" prefHeight="447.0" prefWidth="1060.0" spacing="10.0">
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </AnchorPane>
+        <AnchorPane fx:id="signUpToTestDrivePanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+            <children>
+                <AnchorPane layoutX="166.0" layoutY="69.0" opacity="0.6" prefHeight="440.0" prefWidth="768.0" style="-fx-background-color: ORANGE;">
+                    <children>
+                        <Label layoutX="228.0" layoutY="14.0" text="Запись на тест-драйв" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="30.0" />
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="chooseCar" layoutX="281.0" layoutY="99.0" prefHeight="37.0" prefWidth="206.0" promptText="Выберите автомобиль" style="-fx-background-color: #FFFFFF;" />
+                        <DatePicker fx:id="dateField" layoutX="281.0" layoutY="202.0" prefHeight="37.0" prefWidth="206.0" promptText="Выберите удобную дату" />
+                        <TextField fx:id="timeField" layoutX="281.0" layoutY="298.0" prefHeight="37.0" prefWidth="206.0" promptText="Впишите удобное время(00:00)" />
+                        <Button fx:id="signUpToTestDriveButton" layoutX="308.0" layoutY="371.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF;" text="Оформить запись">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </AnchorPane>
+            </children></AnchorPane>
+        <AnchorPane fx:id="checkMyRequestsPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+        </AnchorPane>
+        <AnchorPane fx:id="checkMyTestDrivesPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+        </AnchorPane>
+    </children>
 </AnchorPane>
