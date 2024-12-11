@@ -74,7 +74,7 @@ public class ServerResponse {
         output.writeObject(userRepository.findByUsername(username).toUser());
     }
 
-    public void getUsers(ObjectOutputStream output) throws IOException, ClassNotFoundException {
+    public void getUsers(ObjectOutputStream output) throws IOException {
         List<User> users = userRepository.findAllByRole(RoleName.CLIENT).stream()
                                                                         .map(UserEntity::toUser)
                                                                         .toList();

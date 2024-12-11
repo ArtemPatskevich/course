@@ -1,5 +1,7 @@
 package main.utils.tcp;
 
+import main.Factory.RequestHandler;
+import main.Factory.RequestHandlerFactory;
 import main.Main;
 import main.enums.requests.ClientRequestType;
 
@@ -27,26 +29,16 @@ public class ClientRequestHandler implements Runnable {
     @Override
     public void run() {
         try {
-            ClientRequestType clientRequestType;
+            RequestHandlerFactory handlerFactory = new RequestHandlerFactory(serverResponse);
+
             while (true) {
-                clientRequestType = (ClientRequestType) input.readObject();
-                switch (clientRequestType) {
-                    case IS_USERNAME_EXISTS -> serverResponse.isUsernameExists(output, input);
-                    case REGISTER_CLIENT -> serverResponse.registerClient(output, input);
-                    case AUTHORIZE_USER -> serverResponse.authorizeUser(output, input);
-                    case GET_REQUESTS -> serverResponse.getRequests(output);
-                    case GET_USER_BY_USERNAME -> serverResponse.getUserByUsername(output, input);
-                    case GET_USERS -> serverResponse.getUsers(output);
-                    case DELETE_USER -> serverResponse.deleteUserById(output, input);
-                    case DELETE_CAR -> serverResponse.deleteCarById(output, input);
-                    case GET_CARS -> serverResponse.getCars(output);
-                    case ADD_CAR -> serverResponse.addCar(output, input);
-                    case UPDATE_CAR -> serverResponse.updateCar(output, input);
-                    case GET_TEST_DRIVES -> serverResponse.getTestDrives(output);
-                    case ADD_REQUEST -> serverResponse.addRequest(output, input);
-                    case ADD_TEST_DRIVE -> serverResponse.addTestDrive(output, input);
-                    case DELETE_TEST_DRIVE -> serverResponse.deleteTestDrive(output, input);
-                    case GET_CLIENTS -> serverResponse.getClients(output);
+                ClientRequestType clientRequestType = (ClientRequestType) input.readObject();
+                RequestHandler handler = handlerFactory.getHandler(clientRequestType);
+
+                if (handler != null) {
+                    handler.handle(output, input);
+                } else {
+                    throw new IllegalArgumentException("Unknown request type: " + clientRequestType);
                 }
             }
         } catch (SocketException e) {
