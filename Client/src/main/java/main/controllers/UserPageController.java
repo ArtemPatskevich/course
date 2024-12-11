@@ -384,6 +384,7 @@ public class UserPageController {
 
     //ToDo
     private boolean makeRequestOnServer(Request req) {
+        System.out.println(req);
         try {
             ClientRequest.sendRequestType(ClientRequestType.ADD_REQUEST);
             ClientRequest.output.writeObject(req);

@@ -56,7 +56,7 @@ public class RequestEntity {
         this.isApproved = request.isApproved();
         this.clientId = request.getClient().getId();
         this.carId = request.getCar().getId();
-        this.managerId = request.getManager().getId();
+        this.managerId = null;
         this.sendDate = request.getSendDate();
         this.approvedDate = request.getApprovedDate();
     }
