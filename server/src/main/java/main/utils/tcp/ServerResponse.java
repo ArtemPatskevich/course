@@ -78,7 +78,6 @@ public class ServerResponse {
         List<User> users = userRepository.findAllByRole(RoleName.CLIENT).stream()
                                                                         .map(UserEntity::toUser)
                                                                         .toList();
-        System.out.println(users);
         output.writeObject(users);
     }
 
@@ -150,7 +149,11 @@ public class ServerResponse {
     public void addRequest(ObjectOutputStream output, ObjectInputStream input) throws IOException {
         try {
             Request request = (Request) input.readObject();
-            requestRepository.save(new RequestEntity(request));
+            RequestEntity requestEntity = new RequestEntity(request);
+
+            System.out.println(requestEntity);
+
+            requestRepository.save(requestEntity);
             output.writeObject(ServerResponseStatus.OK);
         } catch (Exception e) {
             output.writeObject(ServerResponseStatus.ERROR);

@@ -56,7 +56,11 @@ public class RequestEntity {
         this.isApproved = request.isApproved();
         this.clientId = request.getClient().getId();
         this.carId = request.getCar().getId();
-        this.managerId = null;
+        if(request.getManager() == null){
+            this.managerId = null;
+        } else {
+            this.managerId = request.getManager().getId();
+        }
         this.sendDate = request.getSendDate();
         this.approvedDate = request.getApprovedDate();
     }
@@ -77,14 +81,7 @@ public class RequestEntity {
                         car.getBodyType(),
                         car.getImagePath()
                 ),
-                new User(
-                        manager.getId(),
-                        manager.getUsername(),
-                        manager.getPassword(),
-                        manager.getFirstname(),
-                        manager.getLastname(),
-                        new Role(manager.getRole().getName())
-                ),
+                null,
                 sendDate, approvedDate
         );
     }

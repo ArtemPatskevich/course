@@ -16,6 +16,7 @@ public class RequestService {
     public List<Request> getRequests() {
         List<Request> requests = new ArrayList<>();
         requestRepository.findAll().forEach(request -> requests.add(request.toRequest()));
+        System.out.println(requests);
         return requests;
     }
 }

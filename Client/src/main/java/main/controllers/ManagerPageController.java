@@ -201,6 +201,9 @@ public class ManagerPageController {
 
         workerColumnReqCheck.setCellValueFactory(cellData -> {
             User manager = cellData.getValue().getManager();
+            if(manager == null) {
+                return new SimpleStringProperty("-");
+            }
             String fullName = manager.getFirstName() + " " + manager.getLastName();
             return new SimpleStringProperty(fullName);
         });
@@ -376,6 +379,7 @@ public class ManagerPageController {
         }
     }
     private boolean sendRequestToServer(Request req) {
+        req.setManager(UserSession.getInstance().getUser());
         try {
             ClientRequest.sendRequestType(ClientRequestType.ADD_REQUEST);
             ClientRequest.output.writeObject(req);
