@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" stylesheets="@adminPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.UserPageController">
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.UserPageController">
     <children>
         <AnchorPane prefHeight="123.0" prefWidth="1100.0" style="-fx-background-color: #000000;">
             <children>
@@ -82,8 +82,8 @@
                             </font>
                         </Label>
                         <ComboBox fx:id="chooseCar" layoutX="281.0" layoutY="99.0" prefHeight="37.0" prefWidth="206.0" promptText="Выберите автомобиль" style="-fx-background-color: #FFFFFF;" />
-                        <DatePicker fx:id="dateField" layoutX="281.0" layoutY="202.0" prefHeight="37.0" prefWidth="206.0" promptText="Выберите удобную дату" style="-fx-font-weight: bold; -fx-text-fill: black;" />
-                        <TextField fx:id="timeField" layoutX="281.0" layoutY="298.0" prefHeight="37.0" prefWidth="206.0" promptText="Впишите удобное время(00:00)" style="-fx-font-weight: bold; -fx-text-fill: black;" />
+                        <DatePicker fx:id="dateField" layoutX="281.0" layoutY="202.0" prefHeight="37.0" prefWidth="206.0" promptText="Выберите удобную дату" style="-fx-font-weight: bold; -fx-text-fill: BLACK;" />
+                        <TextField fx:id="timeField" layoutX="281.0" layoutY="298.0" prefHeight="37.0" prefWidth="206.0" promptText="Впишите удобное время(00:00)" style="-fx-font-weight: bold; -fx-text-fill: BLACK;" />
                         <Button fx:id="signUpToTestDriveButton" layoutX="308.0" layoutY="371.0" mnemonicParsing="false" style="-fx-background-color: #FFFFFF;" text="Оформить запись">
                             <font>
                                 <Font name="System Bold" size="15.0" />
