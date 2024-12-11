@@ -4,6 +4,7 @@ package main.models.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import main.enums.entityAttributes.BodyType;
 import main.enums.entityAttributes.PetrolType;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
 public class Car implements Serializable {
     private int id;
     private String brand;

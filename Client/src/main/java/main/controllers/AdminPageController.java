@@ -509,7 +509,8 @@ public class AdminPageController {
         alert.showAndWait();
     }
 
-    private void updateCar(Car car) {
+    private void updateCar(Caqwertyr car) {
+        System.out.println("UPDATE: " + car);
         try {
             ClientRequest.sendRequestType(ClientRequestType.UPDATE_CAR);
             ClientRequest.output.writeObject(car);
