@@ -32,6 +32,7 @@
                 <ComboBox fx:id="checkCarBox" layoutX="247.0" layoutY="49.0" prefHeight="31.0" prefWidth="181.0" promptText="Просмотр авто" style="-fx-background-color: #FFFFFF;">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Просмотр авто" />
                             <String fx:value="От самого дорогого к самому дешевому" />
                             <String fx:value="От самого дешевого к самому дорогому" />
                             <String fx:value="Сортировка по типу топлива" />

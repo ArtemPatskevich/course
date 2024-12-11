@@ -208,7 +208,6 @@ public class UserPageController {
                     carControlPanel.setVisible(true);
                     displayCars(cars);
                     break;
-
                 case "От самого дорогого к самому дешевому":
                     closePanels();
                     carControlPanel.setVisible(true);
@@ -216,7 +215,6 @@ public class UserPageController {
                     List<Car> sortedDescending = sorterContext.executeSort(new ArrayList<>(cars));
                     displayCars(sortedDescending);
                     break;
-
                 case "От самого дешевого к самому дорогому":
                     closePanels();
                     carControlPanel.setVisible(true);
@@ -224,7 +222,6 @@ public class UserPageController {
                     List<Car> sortedAscending = sorterContext.executeSort(new ArrayList<>(cars));
                     displayCars(sortedAscending);
                     break;
-
                 case "Сортировка по типу топлива":
                     closePanels();
                     carControlPanel.setVisible(true);

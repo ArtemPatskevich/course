@@ -7,16 +7,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
+import main.Strategy.AscendingCostSortStrategy;
+import main.Strategy.DescendingCostSortStrategy;
+import main.Strategy.PetrolTypeSortStrategy;
+import main.Strategy.SorterContext;
 import main.enums.entityAttributes.BodyType;
 import main.enums.entityAttributes.PetrolType;
 import main.enums.entityAttributes.RoleName;
@@ -48,12 +57,16 @@ public class AdminPageController {
     @FXML
     private ComboBox<String> userControl;
     @FXML
+    private ComboBox<String> checkCarBox;
+
+    @FXML
     private AnchorPane checkUserPanel;
     @FXML
     private AnchorPane deleteUserPanel;
     @FXML
     private Button makingReport;
-
+    @FXML
+    private VBox carsContainer;
     @FXML
     private Button logOut;
 
@@ -138,6 +151,7 @@ public class AdminPageController {
         initializeDeleteCarsTableColumns();
         initializeUpdateTableColumns();
         setupCarControlListener();
+        setupCarCheckListener();
         addCarButton.setOnAction(event -> handleAddCar());
 
         chooseCarFile.setOnAction(event -> openFileChooser());
@@ -148,6 +162,11 @@ public class AdminPageController {
         for (PetrolType type : PetrolType.values()) {
             petrolTypeChoose.getItems().add(type);
         }
+    }
+    private void setupCarCheckListener() {
+        checkCarBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            handleCarSelection(newValue);
+        });
     }
     private void setupUserControlListener() {
         userControl.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -366,9 +385,6 @@ public class AdminPageController {
     private void handleCarControlSelection(String selectedValue) {
         if (selectedValue != null) {
             switch (selectedValue) {
-                case "Просмотреть автомобили":
-                    closePanels();
-                    break;
                 case "Удалить автомобили":
                     closePanels();
                     deleteCarPanel.setVisible(true);
@@ -427,6 +443,41 @@ public class AdminPageController {
             else {
                 showAlert("Ошибка", "Некорректное добавление");
                 clearFields();
+            }
+        }
+    }
+
+    private void handleCarSelection(String selectedValue) {
+        List<Car> cars = getCarsFromServer();
+        SorterContext sorterContext;
+        if (selectedValue != null) {
+            switch (selectedValue) {
+                case "Просмотр авто":
+                    closePanels();
+                    carControlPanel.setVisible(true);
+                    displayCars(cars);
+                    break;
+                case "От самого дорогого к самому дешевому":
+                    closePanels();
+                    carControlPanel.setVisible(true);
+                    sorterContext = new SorterContext(new DescendingCostSortStrategy());
+                    List<Car> sortedDescending = sorterContext.executeSort(new ArrayList<>(cars));
+                    displayCars(sortedDescending);
+                    break;
+                case "От самого дешевого к самому дорогому":
+                    closePanels();
+                    carControlPanel.setVisible(true);
+                    sorterContext = new SorterContext(new AscendingCostSortStrategy());
+                    List<Car> sortedAscending = sorterContext.executeSort(new ArrayList<>(cars));
+                    displayCars(sortedAscending);
+                    break;
+                case "Сортировка по типу топлива":
+                    closePanels();
+                    carControlPanel.setVisible(true);
+                    sorterContext = new SorterContext(new PetrolTypeSortStrategy());
+                    List<Car> sortedByPetrolType = sorterContext.executeSort(new ArrayList<>(cars));
+                    displayCars(sortedByPetrolType);
+                    break;
             }
         }
     }
@@ -579,6 +630,78 @@ public class AdminPageController {
         } catch (IOException | ClassNotFoundException e) {
             return new ArrayList<>();
         }
+    }
+
+    private void displayCars(List<Car> cars)
+    {
+        carsContainer.getChildren().clear();
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(250);
+        gridPane.setVgap(50);
+        gridPane.setAlignment(Pos.TOP_CENTER);
+        gridPane.setStyle("-fx-padding: 20;");
+
+        int column = 0;
+        int row = 0;
+
+        for (Car car : cars) {
+            AnchorPane carPane = createCarPane(car);
+            gridPane.add(carPane, column, row);
+
+            column++;
+            if (column >= 2) {
+                column = 0;
+                row++;
+            }
+        }
+
+        carsContainer.getChildren().add(gridPane);
+    }
+    private AnchorPane createCarPane(Car car) {
+        AnchorPane carPane = new AnchorPane();
+        carPane.setPrefSize(400, 450);
+        carPane.setStyle("-fx-background-color:  ORANGE; -fx-opacity: 0.6; -fx-padding: 10; -fx-border-radius: 10; -fx-background-radius: 10;");
+
+        AnchorPane.setTopAnchor(carPane, 50.0);
+        AnchorPane.setLeftAnchor(carPane, (800 - carPane.getPrefWidth()) / 2);
+
+        ImageView carImageView = new ImageView("file:///" + car.getImagePath());
+        carImageView.setFitHeight(200);
+        carImageView.setFitWidth(250);
+        carImageView.setLayoutX((carPane.getPrefWidth() - carImageView.getFitWidth()) / 2);
+        carImageView.setLayoutY(20);
+        carPane.getChildren().add(carImageView);
+
+        Label carBrandLabel = new Label("Марка: " + car.getBrand());
+        carBrandLabel.setTextFill(Color.WHITE);
+        carBrandLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 25px;");
+        carBrandLabel.setLayoutX(10);
+        carBrandLabel.setLayoutY(240);
+        carPane.getChildren().add(carBrandLabel);
+
+        Label carCostLabel = new Label("Цена: " + car.getCost() + " $");
+        carCostLabel.setTextFill(Color.WHITE);
+        carCostLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 18px;");
+        carCostLabel.setLayoutX(10);
+        carCostLabel.setLayoutY(280);
+        carPane.getChildren().add(carCostLabel);
+
+        Label petrolTypeLabel = new Label("Тип топлива: " + car.getPetrolType());
+        petrolTypeLabel.setTextFill(Color.WHITE);
+        petrolTypeLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 18px;");
+        petrolTypeLabel.setLayoutX(10);
+        petrolTypeLabel.setLayoutY(320);
+        carPane.getChildren().add(petrolTypeLabel);
+
+        Label bodyTypeLabel = new Label("Тип кузова: " + car.getBodyType());
+        bodyTypeLabel.setTextFill(Color.WHITE);
+        bodyTypeLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 18px;");
+        bodyTypeLabel.setLayoutX(10);
+        bodyTypeLabel.setLayoutY(350);
+        carPane.getChildren().add(bodyTypeLabel);
+
+        return carPane;
     }
 
     public void closePanels() {

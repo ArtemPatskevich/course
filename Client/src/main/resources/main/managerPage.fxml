@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="700.0" prefWidth="1100.0" stylesheets="@adminPage.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controllers.ManagerPageController">
@@ -21,29 +26,41 @@
                         <Font name="System Bold" size="15.0" />
                     </font>
                 </Button>
-            <Button fx:id="checkRequestsButton" layoutX="381.0" layoutY="49.0" mnemonicParsing="false" text="Просмотр всех сделок">
+            <Button fx:id="checkRequestsButton" layoutX="364.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: WHITE;" text="Просмотр всех сделок">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="makeRequestButton" layoutX="594.0" layoutY="49.0" mnemonicParsing="false" text="Заключение сделки">
+            <Button fx:id="makeRequestButton" layoutX="731.0" layoutY="14.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="195.0" style="-fx-background-color: WHITE;" text="Заключение сделки">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="workingWithTestDriveButton" layoutX="782.0" layoutY="49.0" mnemonicParsing="false" text="Работа с тест-драйвами">
+            <Button fx:id="workingWithTestDriveButton" layoutX="731.0" layoutY="65.0" mnemonicParsing="false" style="-fx-background-color: WHITE;" text="Работа с тест-драйвами">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="checkCarsButton" layoutX="225.0" layoutY="49.0" mnemonicParsing="false" text="Просмотр авто">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
+                <ComboBox fx:id="checkCarBox" layoutX="367.0" layoutY="65.0" prefHeight="31.0" prefWidth="181.0" promptText="Просмотр авто" style="-fx-background-color: #FFFFFF;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Просмотр авто" />
+                            <String fx:value="От самого дорогого к самому дешевому" />
+                            <String fx:value="От самого дешевого к самому дорогому" />
+                            <String fx:value="Сортировка по типу топлива" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="carControlPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false" />
+        <AnchorPane fx:id="carControlPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0" visible="false">
+            <ScrollPane fx:id="carsScrollPane" fitToWidth="true" layoutX="20.0" layoutY="29.0" prefHeight="544.0" prefWidth="1060.0">
+                <content>
+                    <VBox fx:id="carsContainer" alignment="TOP_CENTER" prefHeight="447.0" prefWidth="1060.0" spacing="10.0">
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </AnchorPane>
         <AnchorPane fx:id="startPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0">
             <children>
                 <Label layoutX="114.0" layoutY="257.0" text="Добро пожаловать в панель менеджера!">
