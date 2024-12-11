@@ -123,6 +123,9 @@ public class UserPageController {
 
         workerColumnReqCheck.setCellValueFactory(cellData -> {
             User manager = cellData.getValue().getManager();
+            if(manager == null) {
+                return new SimpleStringProperty("-");
+            }
             String fullName = manager.getFirstName() + " " + manager.getLastName();
             return new SimpleStringProperty(fullName);
         });

@@ -18,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
@@ -151,9 +152,8 @@ public class ServerResponse {
             Request request = (Request) input.readObject();
             RequestEntity requestEntity = new RequestEntity(request);
 
-            System.out.println(requestEntity);
-
             requestRepository.save(requestEntity);
+
             output.writeObject(ServerResponseStatus.OK);
         } catch (Exception e) {
             output.writeObject(ServerResponseStatus.ERROR);

@@ -569,9 +569,14 @@ public class AdminPageController {
                 String fullNameUser = String.format("%s %s",
                         request.getClient().getUser().getFirstName(),
                         request.getClient().getUser().getLastName());
-                String fullNameManager = String.format("%s %s",
-                        request.getManager().getFirstName(),
-                        request.getManager().getLastName());
+                String fullNameManager;
+                if(request.getManager() == null) {
+                    fullNameManager = "-";
+                } else {
+                    fullNameManager = String.format("%s %s",
+                            request.getManager().getFirstName(),
+                            request.getManager().getLastName());
+                }
                 String line = String.format("ID: %d, Approved: %b, User: %s, Car: %s, Manager: %s, Send Date: %s, Approved Date: %s",
                         request.getId(),
                         request.isApproved(),

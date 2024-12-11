@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class Request implements Serializable {
-    private int id;
+    private Integer id;
     private boolean isApproved;
     private Client client;
     private Car car;

@@ -19,10 +19,10 @@ public class RequestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "is_approved", columnDefinition = "TINYINT")
-    private boolean isApproved;
+    private Boolean isApproved;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id", insertable = false, updatable = false, nullable = false)
@@ -66,6 +66,17 @@ public class RequestEntity {
     }
 
     public Request toRequest() {
+        User manager = null;
+        if(this.manager != null) {
+            manager = new User(
+                    this.manager.getId(),
+                    this.manager.getUsername(),
+                    this.manager.getPassword(),
+                    this.manager.getFirstname(),
+                    this.manager.getLastname(),
+                    this.manager.getRole().toRole()
+            );
+        }
         return new Request(id, isApproved,
                 new Client(
                     client.getId(),
@@ -81,7 +92,7 @@ public class RequestEntity {
                         car.getBodyType(),
                         car.getImagePath()
                 ),
-                null,
+                manager,
                 sendDate, approvedDate
         );
     }
