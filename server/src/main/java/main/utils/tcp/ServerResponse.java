@@ -4,14 +4,8 @@ import main.enums.entityAttributes.RoleName;
 import main.enums.status.RegistrationStatus;
 import main.enums.status.ServerResponseStatus;
 import main.models.dto.*;
-import main.models.entities.CarEntity;
-import main.models.entities.RequestEntity;
-import main.models.entities.TestDriveEntity;
-import main.models.entities.UserEntity;
-import main.repositories.CarRepository;
-import main.repositories.RequestRepository;
-import main.repositories.TestDriveRepository;
-import main.repositories.UserRepository;
+import main.models.entities.*;
+import main.repositories.*;
 import main.services.ClientService;
 import main.services.RequestService;
 import main.services.UserService;
@@ -36,6 +30,7 @@ public class ServerResponse {
     private final CarRepository carRepository;
     private final TestDriveRepository testDriveRepository;
     private final RequestRepository requestRepository;
+    private final ClientRepository clientRepository;
 
     public void getRequests(ObjectOutputStream output) throws IOException {
         List<Request> requests = requestService.getRequests();
@@ -170,5 +165,21 @@ public class ServerResponse {
         } catch (Exception e) {
             output.writeObject(ServerResponseStatus.ERROR);
         }
+    }
+
+    public void deleteTestDrive(ObjectOutputStream output, ObjectInputStream input) throws IOException {
+        try {
+            Integer testDriveId = (Integer) input.readObject();
+            testDriveRepository.deleteById(testDriveId);
+            output.writeObject(ServerResponseStatus.OK);
+        } catch(Exception e) {
+            output.writeObject(ServerResponseStatus.ERROR);
+        }
+    }
+
+    public void getClients(ObjectOutputStream output) throws IOException {
+        Stream<ClientEntity> stream = ((List<ClientEntity>) clientRepository.findAll()).stream();
+        List<Client> clients = stream.map(ClientEntity::toClient).toList();
+        output.writeObject(clients);
     }
 }

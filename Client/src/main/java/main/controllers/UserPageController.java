@@ -379,7 +379,6 @@ public class UserPageController {
         try {
             ClientRequest.sendRequestType(ClientRequestType.GET_REQUESTS);
             List<Request> reqs = (List<Request>) ClientRequest.input.readObject();
-            System.out.println("here is: " + reqs);
             return reqs;
         } catch (IOException | ClassNotFoundException e) {
             return new ArrayList<>();
@@ -387,21 +386,42 @@ public class UserPageController {
     }
 
     //ToDo
-    private boolean makeRequestOnServer(Request req)
-    {
-        return true;
-    }
-    //ToDo
-    private boolean deleteTestDriveOnServer(TestDrive test)
-    {
-        return true;
+    private boolean makeRequestOnServer(Request req) {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.ADD_REQUEST);
+            ClientRequest.output.writeObject(req);
+            ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
+
+            return status.equals(ServerResponseStatus.OK);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     //ToDo
-    private List<Client> getClientsFromServer()
-    {
-        return new ArrayList<>();
+    private boolean deleteTestDriveOnServer(TestDrive test) {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.DELETE_TEST_DRIVE);
+            ClientRequest.output.writeObject(test.getId());
+            ServerResponseStatus status = (ServerResponseStatus) ClientRequest.input.readObject();
+
+            return status.equals(ServerResponseStatus.OK);
+        } catch (Exception e) {
+            return false;
+        }
     }
+
+    //ToDo
+    private List<Client> getClientsFromServer() {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_CLIENTS);
+            List<Client> reqs = (List<Client>) ClientRequest.input.readObject();
+            return reqs;
+        } catch (IOException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
+    }
+
     private void displayCars(List<Car> cars)
     {
         carsContainer.getChildren().clear();

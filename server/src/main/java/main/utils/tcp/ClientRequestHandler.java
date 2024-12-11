@@ -45,6 +45,8 @@ public class ClientRequestHandler implements Runnable {
                     case GET_TEST_DRIVES -> serverResponse.getTestDrives(output);
                     case ADD_REQUEST -> serverResponse.addRequest(output, input);
                     case ADD_TEST_DRIVE -> serverResponse.addTestDrive(output, input);
+                    case DELETE_TEST_DRIVE -> serverResponse.deleteTestDrive(output, input);
+                    case GET_CLIENTS -> serverResponse.getClients(output);
                 }
             }
         } catch (SocketException e) {
