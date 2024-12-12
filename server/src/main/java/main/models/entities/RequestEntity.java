@@ -33,7 +33,7 @@ public class RequestEntity {
     private CarEntity car;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "manager_id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "manager_id", insertable = false, updatable = false, nullable = true)
     private UserEntity manager;
 
     @Column(name = "client_id", columnDefinition = "INT")
