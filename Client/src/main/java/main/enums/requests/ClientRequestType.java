@@ -17,4 +17,5 @@ public enum ClientRequestType {
     ADD_REQUEST,
     ADD_TEST_DRIVE,
     GET_CLIENTS,
+    GET_TOP_THREE_CARS,
 }

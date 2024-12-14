@@ -1,5 +1,6 @@
 package main.utils.tcp;
 
+import lombok.RequiredArgsConstructor;
 import main.enums.entityAttributes.RoleName;
 import main.enums.status.RegistrationStatus;
 import main.enums.status.ServerResponseStatus;
@@ -9,16 +10,13 @@ import main.repositories.*;
 import main.services.ClientService;
 import main.services.RequestService;
 import main.services.UserService;
-import lombok.RequiredArgsConstructor;
 import main.utils.EncryptionUtil;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
@@ -184,5 +182,11 @@ public class ServerResponse {
         Stream<ClientEntity> stream = ((List<ClientEntity>) clientRepository.findAll()).stream();
         List<Client> clients = stream.map(ClientEntity::toClient).toList();
         output.writeObject(clients);
+    }
+
+    public void getTopThreeCars(ObjectOutputStream output) throws IOException {
+        Stream<CarEntity> cars = requestRepository.getTopThreeCars().stream();
+        List<Car> topThreeCars = cars.map(CarEntity::toCar).toList();
+        output.writeObject(topThreeCars);
     }
 }

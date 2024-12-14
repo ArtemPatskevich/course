@@ -358,10 +358,15 @@ public class UserPageController {
     }
 
     //ToDo
-    private List <Car> getPopularCarsFromServer()
-    {
-        return new ArrayList<>();
+    private List<Car> getPopularCarsFromServer() {
+        try {
+            ClientRequest.sendRequestType(ClientRequestType.GET_TOP_THREE_CARS);
+            return (List<Car>) ClientRequest.input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
     }
+
     private List<Car> getCarsFromServer() {
         try {
             ClientRequest.sendRequestType(ClientRequestType.GET_CARS);
@@ -400,7 +405,6 @@ public class UserPageController {
         }
     }
 
-    //ToDo
     private boolean makeRequestOnServer(Request req) {
         try {
             ClientRequest.sendRequestType(ClientRequestType.ADD_REQUEST);
@@ -413,7 +417,6 @@ public class UserPageController {
         }
     }
 
-    //ToDo
     private boolean deleteTestDriveOnServer(TestDrive test) {
         try {
             ClientRequest.sendRequestType(ClientRequestType.DELETE_TEST_DRIVE);
@@ -426,7 +429,6 @@ public class UserPageController {
         }
     }
 
-    //ToDo
     private List<Client> getClientsFromServer() {
         try {
             ClientRequest.sendRequestType(ClientRequestType.GET_CLIENTS);

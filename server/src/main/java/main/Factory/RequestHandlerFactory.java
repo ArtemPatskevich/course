@@ -26,6 +26,7 @@ public class RequestHandlerFactory {
         handlerMap.put(ClientRequestType.ADD_TEST_DRIVE, new AddTestDriveHandler(serverResponse));
         handlerMap.put(ClientRequestType.DELETE_TEST_DRIVE, new DeleteTestDriveHandler(serverResponse));
         handlerMap.put(ClientRequestType.GET_CLIENTS, new GetClientsHandler(serverResponse));
+        handlerMap.put(ClientRequestType.GET_TOP_THREE_CARS, new GetTopThreeCars(serverResponse));
     }
 
     public RequestHandler getHandler(ClientRequestType clientRequestType) {
