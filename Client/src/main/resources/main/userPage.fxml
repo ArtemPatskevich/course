@@ -29,7 +29,7 @@
                     </font>
                 </Button>
 
-                <ComboBox fx:id="checkCarBox" layoutX="247.0" layoutY="49.0" prefHeight="31.0" prefWidth="181.0" promptText="Просмотр авто" style="-fx-background-color: #FFFFFF;">
+                <ComboBox fx:id="checkCarBox" layoutX="247.0" layoutY="65.0" prefHeight="31.0" prefWidth="181.0" promptText="Просмотр авто" style="-fx-background-color: #FFFFFF;">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Просмотр авто" />
@@ -40,7 +40,7 @@
                     </items>
                 </ComboBox>
 
-                <ComboBox fx:id="workWithTestDrivesBox" layoutX="510.0" layoutY="49.0" prefHeight="31.0" prefWidth="197.0" promptText="Работа с тест-драйвами" style="-fx-background-color: #FFFFFF;">
+                <ComboBox fx:id="workWithTestDrivesBox" layoutX="615.0" layoutY="65.0" prefHeight="31.0" prefWidth="197.0" promptText="Работа с тест-драйвами" style="-fx-background-color: #FFFFFF;">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Просмотр тест-драйвов" />
@@ -48,11 +48,16 @@
                         </FXCollections>
                     </items>
                 </ComboBox>
-                <Button fx:id="checkRequests" layoutX="782.0" layoutY="51.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="146.0" style="-fx-background-color: #FFFFFF;" text="Просмотр заявок">
+                <Button fx:id="checkRequests" layoutX="247.0" layoutY="16.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="181.0" style="-fx-background-color: #FFFFFF;" text="Просмотр заявок">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
+            <Button fx:id="popularCars" layoutX="615.0" layoutY="16.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="197.0" style="-fx-background-color: #FFFFFF;" text="Популярные авто">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
             </children>
         </AnchorPane>
         <AnchorPane fx:id="startPanel" layoutY="123.0" prefHeight="577.0" prefWidth="1100.0">

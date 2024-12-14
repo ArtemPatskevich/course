@@ -93,11 +93,15 @@ public class UserPageController {
     private DatePicker dateField;
     @FXML
     private TextField timeField;
+
     @FXML
     private Button signUpToTestDriveButton;
     @FXML
+    private Button popularCars;
+    @FXML
     public void initialize() {
         signUpToTestDriveButton.setOnAction(event -> handleSignUpToTestDrive());
+        popularCars.setOnAction(event -> handlePopularCars());
         checkRequests.setOnAction(event ->handleCheckRequestsPanel());
         logOut.setOnAction(event -> logOut(event));
         setupCarControlListener();
@@ -200,6 +204,12 @@ public class UserPageController {
         checkCarBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             handleCarSelection(newValue);
         });
+    }
+    private void handlePopularCars(){
+        closePanels();
+        carControlPanel.setVisible(true);
+        List<Car> popularCars = getPopularCarsFromServer();
+        displayCars(popularCars);
     }
     private void handleCarSelection(String selectedValue) {
         List<Car> cars = getCarsFromServer();
@@ -347,6 +357,11 @@ public class UserPageController {
         timeField.clear();
     }
 
+    //ToDo
+    private List <Car> getPopularCarsFromServer()
+    {
+        return new ArrayList<>();
+    }
     private List<Car> getCarsFromServer() {
         try {
             ClientRequest.sendRequestType(ClientRequestType.GET_CARS);
